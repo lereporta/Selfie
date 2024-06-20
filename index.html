@@ -40,6 +40,11 @@
         #snap:hover, #save:hover {
             background-color: #45a049;
         }
+
+        #message {
+            color: red;
+            display: none;
+        }
     </style>
 </head>
 <body>
@@ -48,7 +53,7 @@
     <button id="snap">Tirar Foto</button>
     <canvas id="canvas"></canvas>
     <button id="save">Salvar no Google Drive</button>
-    <div id="message" style="color: red; display: none;"></div>
+    <div id="message"></div>
 
     <script src="https://apis.google.com/js/api.js"></script>
     <script src="script.js"></script>

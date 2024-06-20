@@ -58,7 +58,7 @@
     <h1>Tire sua Selfie com Moldura</h1>
     <video id="video" autoplay playsinline></video>
     <button id="snap">Tirar Foto</button>
-    <canvas id="canvas"></canvas>
+    <canvas id="canvas" style="display:none;"></canvas>
     <button id="save">Salvar no Firebase</button>
     <button id="view-gallery">Ver Galeria</button>
     <div id="message"></div>
@@ -111,6 +111,7 @@
             context.font = '30px Arial';
             context.fillStyle = 'white';
             context.fillText('XV MaFer', 10, canvas.height - 20);
+            canvas.style.display = 'block';
         });
 
         // Salvar no Firebase Storage
@@ -126,4 +127,48 @@
                         console.log(`Upload is ${progress}% done`);
                     },
                     (error) => {
-                        showMessage(`Erro ao salvar o arquivo: ${error.
+                        showMessage(`Erro ao salvar o arquivo: ${error.message}`);
+                    },
+                    () => {
+                        getDownloadURL(uploadTask.snapshot.ref).then((downloadURL) => {
+                            showMessage(`Arquivo salvo com sucesso! URL: <a href="${downloadURL}" target="_blank">${downloadURL}</a>`);
+                        }).catch(err => {
+                            showMessage(`Erro ao obter o URL de download: ${err.message}`);
+                        });
+                    }
+                );
+            }, 'image/png');
+        });
+
+        // Ver Galeria
+        document.getElementById('view-gallery').addEventListener('click', () => {
+            const galleryRef = ref(storage, 'selfies/');
+            listAll(galleryRef)
+                .then(res => {
+                    const galleryDiv = document.getElementById('gallery');
+                    galleryDiv.innerHTML = ''; // Limpar galeria
+                    res.items.forEach(itemRef => {
+                        getDownloadURL(itemRef).then(url => {
+                            const img = document.createElement('img');
+                            img.src = url;
+                            img.className = 'gallery-image';
+                            img.width = 150;
+                            galleryDiv.appendChild(img);
+                        }).catch(err => {
+                            showMessage(`Erro ao obter o URL de download: ${err.message}`);
+                        });
+                    });
+                })
+                .catch(err => {
+                    showMessage(`Erro ao listar imagens: ${err.message}`);
+                });
+        });
+
+        function showMessage(message) {
+            const messageDiv = document.getElementById('message');
+            messageDiv.style.display = 'block';
+            messageDiv.innerHTML = message;
+        }
+    </script>
+</body>
+</html>

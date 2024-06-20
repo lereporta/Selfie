@@ -1,7 +1,8 @@
 // script.js
 
-const CLIENT_ID = 'SEU_CLIENT_ID';
+const CLIENT_ID = '586803069885-pbd20dijc609bom99brjjmcb95iqfu56.apps.googleusercontent.com';
 const SCOPES = 'https://www.googleapis.com/auth/drive.file';
+const FOLDER_ID = '1JETlmonTdflu23qtdmzTe9gkn2rdry9J'; // ID da sua pasta
 
 // Configurar a câmera
 const video = document.getElementById('video');
@@ -56,7 +57,8 @@ document.getElementById('save').addEventListener('click', () => {
 
             const metadata = {
                 'name': file.name,
-                'mimeType': file.type
+                'mimeType': file.type,
+                'parents': [FOLDER_ID] // Define a pasta onde o arquivo será salvo
             };
 
             const form = new FormData();

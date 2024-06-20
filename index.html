@@ -150,8 +150,10 @@
         // Ver Galeria
         document.getElementById('view-gallery').addEventListener('click', () => {
             const galleryRef = ref(storage, 'selfies/');
+            console.log('Tentando listar imagens na pasta selfies/');
             listAll(galleryRef)
                 .then(res => {
+                    console.log('Imagens listadas:', res);
                     const galleryDiv = document.getElementById('gallery');
                     galleryDiv.innerHTML = ''; // Limpar galeria
                     res.items.forEach(itemRef => {
@@ -162,13 +164,13 @@
                             img.width = 150;
                             galleryDiv.appendChild(img);
                         }).catch(err => {
-                            console.error("Erro ao obter o URL de download: ", err);
+                            console.error('Erro ao obter o URL de download:', err);
                             showMessage(`Erro ao obter o URL de download: ${err.message}`);
                         });
                     });
                 })
                 .catch(err => {
-                    console.error("Erro ao listar imagens: ", err);
+                    console.error('Erro ao listar imagens:', err);
                     showMessage(`Erro ao listar imagens: ${err.message}`);
                 });
         });

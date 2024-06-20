@@ -42,19 +42,45 @@
             left: 0;
         }
 
-        #snap, #save, #view-gallery {
-            margin: 10px;
-            padding: 10px 20px;
-            font-size: 1rem;
-            border: none;
-            background-color: #4CAF50;
-            color: white;
-            cursor: pointer;
-            border-radius: 5px;
+        #buttons {
+            display: flex;
+            justify-content: space-around;
+            width: 100%;
+            max-width: 1080px;
+            margin-top: 20px;
         }
 
-        #snap:hover, #save:hover, #view-gallery:hover {
-            background-color: #45a049;
+        button {
+            padding: 20px;
+            font-size: 1rem;
+            border: 2px solid pink;
+            background-color: white;
+            color: black;
+            cursor: pointer;
+            border-radius: 5px;
+            position: relative;
+        }
+
+        button:before, button:after {
+            content: '';
+            position: absolute;
+            border: 2px solid pink;
+            width: calc(100% - 8px);
+            height: calc(100% - 8px);
+        }
+
+        button:before {
+            top: 4px;
+            left: 4px;
+        }
+
+        button:after {
+            top: -4px;
+            left: -4px;
+        }
+
+        button:hover {
+            background-color: #f8f8f8;
         }
 
         #message {
@@ -76,10 +102,12 @@
         <video id="video" autoplay playsinline></video>
         <canvas id="frame-canvas"></canvas>
     </div>
-    <button id="snap">Tirar Foto</button>
+    <div id="buttons">
+        <button id="snap">Tirar Foto</button>
+        <button id="save">Salvar no Firebase</button>
+        <button id="view-gallery">Ver Galeria</button>
+    </div>
     <canvas id="canvas" style="display:none;"></canvas>
-    <button id="save">Salvar no Firebase</button>
-    <button id="view-gallery">Ver Galeria</button>
     <div id="message"></div>
     <div id="gallery"></div>
 

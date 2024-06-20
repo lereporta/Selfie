@@ -4,12 +4,49 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Selfie com Moldura</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+        }
+
+        h1 {
+            text-align: center;
+            margin-top: 20px;
+        }
+
+        video, canvas {
+            width: 100%;
+            max-width: 640px;
+            height: auto;
+        }
+
+        #snap, #save {
+            margin: 10px;
+            padding: 10px 20px;
+            font-size: 1rem;
+            border: none;
+            background-color: #4CAF50;
+            color: white;
+            cursor: pointer;
+            border-radius: 5px;
+        }
+
+        #snap:hover, #save:hover {
+            background-color: #45a049;
+        }
+    </style>
 </head>
 <body>
     <h1>Tire sua Selfie com Moldura</h1>
-    <video id="video" width="640" height="480" autoplay></video>
+    <video id="video" autoplay playsinline></video>
     <button id="snap">Tirar Foto</button>
-    <canvas id="canvas" width="640" height="480"></canvas>
+    <canvas id="canvas"></canvas>
     <img id="frame" src="moldura.png" style="display:none;">
     <button id="save">Salvar no Google Drive</button>
 

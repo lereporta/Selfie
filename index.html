@@ -26,7 +26,7 @@
             height: auto;
         }
 
-        #snap, #save {
+        #snap, #save, #view-gallery {
             margin: 10px;
             padding: 10px 20px;
             font-size: 1rem;
@@ -37,7 +37,7 @@
             border-radius: 5px;
         }
 
-        #snap:hover, #save:hover {
+        #snap:hover, #save:hover, #view-gallery:hover {
             background-color: #45a049;
         }
 
@@ -46,56 +46,29 @@
             display: none;
         }
 
-        #login-form {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-        }
-
-        #login-form input {
-            margin: 5px;
-            padding: 10px;
-            font-size: 1rem;
-        }
-
-        #login-form button {
+        .gallery-image {
             margin: 10px;
-            padding: 10px 20px;
-            font-size: 1rem;
-            border: none;
-            background-color: #4CAF50;
-            color: white;
-            cursor: pointer;
-            border-radius: 5px;
-        }
-
-        #login-form button:hover {
-            background-color: #45a049;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            padding: 5px;
         }
     </style>
 </head>
 <body>
     <h1>Tire sua Selfie com Moldura</h1>
-
-    <!-- Formulário de Login -->
-    <div id="login-form">
-        <input type="email" id="email" placeholder="Email">
-        <input type="password" id="password" placeholder="Senha">
-        <button id="login">Login</button>
-    </div>
-
     <video id="video" autoplay playsinline></video>
     <button id="snap">Tirar Foto</button>
     <canvas id="canvas"></canvas>
     <button id="save">Salvar no Firebase</button>
+    <button id="view-gallery">Ver Galeria</button>
     <div id="message"></div>
+    <div id="gallery"></div>
 
     <!-- Adicione os SDKs do Firebase -->
     <script type="module">
         // Import the functions you need from the SDKs you need
         import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
-        import { getAuth, signInWithEmailAndPassword, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
-        import { getStorage, ref, uploadBytesResumable, getDownloadURL } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-storage.js";
+        import { getStorage, ref, uploadBytesResumable, getDownloadURL, listAll } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-storage.js";
 
         // Your web app's Firebase configuration
         const firebaseConfig = {
@@ -109,26 +82,7 @@
 
         // Initialize Firebase
         const app = initializeApp(firebaseConfig);
-        const auth = getAuth(app);
         const storage = getStorage(app);
-
-        // Login
-        document.getElementById('login').addEventListener('click', () => {
-            const email = document.getElementById('email').value;
-            const password = document.getElementById('password').value;
-            signInWithEmailAndPassword(auth, email, password)
-                .then(userCredential => {
-                    console.log("Usuário logado");
-                    document.getElementById('login-form').style.display = 'none';
-                    document.getElementById('video').style.display = 'block';
-                    document.getElementById('snap').style.display = 'block';
-                    document.getElementById('canvas').style.display = 'block';
-                    document.getElementById('save').style.display = 'block';
-                })
-                .catch(error => {
-                    showMessage(`Erro ao fazer login: ${error.message}`);
-                });
-        });
 
         // Configurar a câmera
         const video = document.getElementById('video');
@@ -172,24 +126,4 @@
                         console.log(`Upload is ${progress}% done`);
                     },
                     (error) => {
-                        showMessage(`Erro ao salvar o arquivo: ${error.message}`);
-                    },
-                    () => {
-                        getDownloadURL(uploadTask.snapshot.ref).then((downloadURL) => {
-                            showMessage(`Arquivo salvo com sucesso! URL: <a href="${downloadURL}" target="_blank">${downloadURL}</a>`);
-                        }).catch(err => {
-                            showMessage(`Erro ao obter o URL de download: ${err.message}`);
-                        });
-                    }
-                );
-            }, 'image/png');
-        });
-
-        function showMessage(message) {
-            const messageDiv = document.getElementById('message');
-            messageDiv.style.display = 'block';
-            messageDiv.innerHTML = message;
-        }
-    </script>
-</body>
-</html>
+                        showMessage(`Erro ao salvar o arquivo: ${error.

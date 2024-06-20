@@ -1,8 +1,31 @@
-import { storage, ref, uploadBytesResumable, getDownloadURL } from './index.html';
+// Import the functions you need from the SDKs you need
+import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
+import { getStorage, ref, uploadBytesResumable, getDownloadURL, listAll } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-storage.js";
+
+// Your web app's Firebase configuration
+const firebaseConfig = {
+    apiKey: "AIzaSyDV447G0fPHuVoITWjXMJ-_uoZJ8LhA994",
+    authDomain: "testedoteste-d5361.firebaseapp.com",
+    projectId: "testedoteste-d5361",
+    storageBucket: "testedoteste-d5361.appspot.com",
+    messagingSenderId: "199930490793",
+    appId: "1:199930490793:web:c79d02d9ddd2635e2e9eb8"
+};
+
+// Initialize Firebase
+const app = initializeApp(firebaseConfig);
+const storage = getStorage(app);
+
+// Função para exibir mensagens
+function showMessage(message) {
+    const messageDiv = document.getElementById('message');
+    messageDiv.style.display = 'block';
+    messageDiv.innerHTML = message;
+}
 
 // Configurar a câmera
 const video = document.getElementById('video');
-navigator.mediaDevices.getUserMedia({ video: true })
+navigator.mediaDevices.getUserMedia({ video: { width: 1080, height: 1080 } })
     .then(stream => {
         video.srcObject = stream;
     })
@@ -11,27 +34,35 @@ navigator.mediaDevices.getUserMedia({ video: true })
         showMessage("Erro ao acessar a câmera: " + err.message);
     });
 
+// Carregar a moldura
+const frameCanvas = document.getElementById('frame-canvas');
+const frameContext = frameCanvas.getContext('2d');
+const frameImage = new Image();
+frameImage.src = 'frame';
+frameImage.onload = () => {
+    frameContext.drawImage(frameImage, 0, 0, frameCanvas.width, frameCanvas.height);
+};
+
 // Tirar a foto e aplicar a moldura
-const canvas = document.getElementById('canvas');
-const context = canvas.getContext('2d');
+const captureCanvas = document.getElementById('canvas');
+const captureContext = captureCanvas.getContext('2d');
 
 document.getElementById('snap').addEventListener('click', () => {
-    context.drawImage(video, 0, 0, canvas.width, canvas.height);
+    captureContext.drawImage(video, 0, 0, captureCanvas.width, captureCanvas.height);
 
-    // Adicionar enquadramento
-    context.strokeStyle = 'red';
-    context.lineWidth = 10;
-    context.strokeRect(0, 0, canvas.width, canvas.height);
+    // Adicionar a moldura
+    captureContext.drawImage(frameImage, 0, 0, captureCanvas.width, captureCanvas.height);
 
     // Adicionar legenda
-    context.font = '30px Arial';
-    context.fillStyle = 'white';
-    context.fillText('XV MaFer', 10, canvas.height - 20);
+    captureContext.font = '30px Arial';
+    captureContext.fillStyle = 'white';
+    captureContext.fillText('XV MaFer', 10, captureCanvas.height - 20);
+    captureCanvas.style.display = 'block';
 });
 
 // Salvar no Firebase Storage
 document.getElementById('save').addEventListener('click', () => {
-    canvas.toBlob(blob => {
+    captureCanvas.toBlob(blob => {
         const storageRef = ref(storage, `selfies/${Date.now()}_selfie_com_moldura.png`);
         const uploadTask = uploadBytesResumable(storageRef, blob);
 
@@ -47,14 +78,38 @@ document.getElementById('save').addEventListener('click', () => {
             () => {
                 getDownloadURL(uploadTask.snapshot.ref).then((downloadURL) => {
                     showMessage(`Arquivo salvo com sucesso! URL: <a href="${downloadURL}" target="_blank">${downloadURL}</a>`);
+                }).catch(err => {
+                    showMessage(`Erro ao obter o URL de download: ${err.message}`);
                 });
             }
         );
-    });
+    }, 'image/png');
 });
 
-function showMessage(message) {
-    const messageDiv = document.getElementById('message');
-    messageDiv.style.display = 'block';
-    messageDiv.innerHTML = message;
-}
+// Ver Galeria
+document.getElementById('view-gallery').addEventListener('click', () => {
+    const galleryRef = ref(storage, 'selfies/');
+    console.log('Tentando listar imagens na pasta selfies/');
+    listAll(galleryRef)
+        .then(res => {
+            console.log('Imagens listadas:', res);
+            const galleryDiv = document.getElementById('gallery');
+            galleryDiv.innerHTML = ''; // Limpar galeria
+            res.items.forEach(itemRef => {
+                getDownloadURL(itemRef).then(url => {
+                    const img = document.createElement('img');
+                    img.src = url;
+                    img.className = 'gallery-image';
+                    img.width = 150;
+                    galleryDiv.appendChild(img);
+                }).catch(err => {
+                    console.error('Erro ao obter o URL de download:', err);
+                    showMessage(`Erro ao obter o URL de download: ${err.message}`);
+                });
+            });
+        })
+        .catch(err => {
+            console.error('Erro ao listar imagens:', err);
+            showMessage(`Erro ao listar imagens: ${err.message}`);
+        });
+});

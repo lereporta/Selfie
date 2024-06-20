@@ -162,11 +162,13 @@
                             img.width = 150;
                             galleryDiv.appendChild(img);
                         }).catch(err => {
+                            console.error("Erro ao obter o URL de download: ", err);
                             showMessage(`Erro ao obter o URL de download: ${err.message}`);
                         });
                     });
                 })
                 .catch(err => {
+                    console.error("Erro ao listar imagens: ", err);
                     showMessage(`Erro ao listar imagens: ${err.message}`);
                 });
         });

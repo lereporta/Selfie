@@ -45,10 +45,45 @@
             color: red;
             display: none;
         }
+
+        #login-form {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        #login-form input {
+            margin: 5px;
+            padding: 10px;
+            font-size: 1rem;
+        }
+
+        #login-form button {
+            margin: 10px;
+            padding: 10px 20px;
+            font-size: 1rem;
+            border: none;
+            background-color: #4CAF50;
+            color: white;
+            cursor: pointer;
+            border-radius: 5px;
+        }
+
+        #login-form button:hover {
+            background-color: #45a049;
+        }
     </style>
 </head>
 <body>
     <h1>Tire sua Selfie com Moldura</h1>
+
+    <!-- Formulário de Login -->
+    <div id="login-form">
+        <input type="email" id="email" placeholder="Email">
+        <input type="password" id="password" placeholder="Senha">
+        <button id="login">Login</button>
+    </div>
+
     <video id="video" autoplay playsinline></video>
     <button id="snap">Tirar Foto</button>
     <canvas id="canvas"></canvas>
@@ -59,6 +94,7 @@
     <script type="module">
         // Import the functions you need from the SDKs you need
         import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
+        import { getAuth, signInWithEmailAndPassword, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
         import { getStorage, ref, uploadBytesResumable, getDownloadURL } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-storage.js";
 
         // Your web app's Firebase configuration
@@ -73,7 +109,26 @@
 
         // Initialize Firebase
         const app = initializeApp(firebaseConfig);
+        const auth = getAuth(app);
         const storage = getStorage(app);
+
+        // Login
+        document.getElementById('login').addEventListener('click', () => {
+            const email = document.getElementById('email').value;
+            const password = document.getElementById('password').value;
+            signInWithEmailAndPassword(auth, email, password)
+                .then(userCredential => {
+                    console.log("Usuário logado");
+                    document.getElementById('login-form').style.display = 'none';
+                    document.getElementById('video').style.display = 'block';
+                    document.getElementById('snap').style.display = 'block';
+                    document.getElementById('canvas').style.display = 'block';
+                    document.getElementById('save').style.display = 'block';
+                })
+                .catch(error => {
+                    showMessage(`Erro ao fazer login: ${error.message}`);
+                });
+        });
 
         // Configurar a câmera
         const video = document.getElementById('video');

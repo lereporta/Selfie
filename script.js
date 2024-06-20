@@ -1,5 +1,7 @@
 // script.js
 
+import { storage, ref, uploadBytesResumable, getDownloadURL } from './index.html';
+
 // Configurar a câmera
 const video = document.getElementById('video');
 navigator.mediaDevices.getUserMedia({ video: true })
@@ -32,7 +34,7 @@ document.getElementById('snap').addEventListener('click', () => {
 // Salvar no Firebase Storage
 document.getElementById('save').addEventListener('click', () => {
     canvas.toBlob(blob => {
-        const storageRef = ref(firebase.storage(), `selfies/${Date.now()}_selfie_com_moldura.png`);
+        const storageRef = ref(storage, `selfies/${Date.now()}_selfie_com_moldura.png`);
         const uploadTask = uploadBytesResumable(storageRef, blob);
 
         uploadTask.on('state_changed', 

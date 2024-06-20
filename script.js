@@ -25,23 +25,36 @@ function showMessage(message) {
 
 // Configurar a câmera
 const video = document.getElementById('video');
-navigator.mediaDevices.getUserMedia({ video: { width: 1080, height: 1080 } })
+navigator.mediaDevices.getUserMedia({ video: true })
     .then(stream => {
         video.srcObject = stream;
+        video.onloadedmetadata = () => {
+            adjustCanvasSize();
+        };
     })
     .catch(err => {
         console.error("Erro ao acessar a câmera: " + err);
         showMessage("Erro ao acessar a câmera: " + err.message);
     });
 
-// Carregar a moldura
-const frameCanvas = document.getElementById('frame-canvas');
-const frameContext = frameCanvas.getContext('2d');
-const frameImage = new Image();
-frameImage.src = 'frame';
-frameImage.onload = () => {
-    frameContext.drawImage(frameImage, 0, 0, frameCanvas.width, frameCanvas.height);
-};
+// Ajustar o tamanho do canvas para corresponder ao vídeo
+function adjustCanvasSize() {
+    const video = document.getElementById('video');
+    const frameCanvas = document.getElementById('frame-canvas');
+    const captureCanvas = document.getElementById('canvas');
+    frameCanvas.width = video.videoWidth;
+    frameCanvas.height = video.videoHeight;
+    captureCanvas.width = video.videoWidth;
+    captureCanvas.height = video.videoHeight;
+
+    // Carregar a moldura
+    const frameContext = frameCanvas.getContext('2d');
+    const frameImage = new Image();
+    frameImage.src = 'frame';
+    frameImage.onload = () => {
+        frameContext.drawImage(frameImage, 0, 0, frameCanvas.width, frameCanvas.height);
+    };
+}
 
 // Tirar a foto e aplicar a moldura
 const captureCanvas = document.getElementById('canvas');
@@ -51,13 +64,17 @@ document.getElementById('snap').addEventListener('click', () => {
     captureContext.drawImage(video, 0, 0, captureCanvas.width, captureCanvas.height);
 
     // Adicionar a moldura
-    captureContext.drawImage(frameImage, 0, 0, captureCanvas.width, captureCanvas.height);
+    const frameImage = new Image();
+    frameImage.src = 'frame';
+    frameImage.onload = () => {
+        captureContext.drawImage(frameImage, 0, 0, captureCanvas.width, captureCanvas.height);
 
-    // Adicionar legenda
-    captureContext.font = '30px Arial';
-    captureContext.fillStyle = 'white';
-    captureContext.fillText('XV MaFer', 10, captureCanvas.height - 20);
-    captureCanvas.style.display = 'block';
+        // Adicionar legenda
+        captureContext.font = '30px Arial';
+        captureContext.fillStyle = 'white';
+        captureContext.fillText('XV MaFer', 10, captureCanvas.height - 20);
+        captureCanvas.style.display = 'block';
+    };
 });
 
 // Salvar no Firebase Storage

@@ -52,11 +52,28 @@
     <video id="video" autoplay playsinline></video>
     <button id="snap">Tirar Foto</button>
     <canvas id="canvas"></canvas>
-    <button id="save">Salvar no Google Drive</button>
+    <button id="save">Salvar no Firebase</button>
     <div id="message"></div>
 
-    <script src="https://apis.google.com/js/api.js"></script>
-    <script src="https://accounts.google.com/gsi/client"></script>
+    <!-- Importar SDKs do Firebase -->
+    <script type="module">
+      import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
+      import { getStorage, ref, uploadBytesResumable, getDownloadURL } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-storage.js";
+
+      const firebaseConfig = {
+        apiKey: "AIzaSyBJQ-AurpB2bRDnxo0uQtCnFPlZh3kGu5k",
+        authDomain: "teste-a3169.firebaseapp.com",
+        projectId: "teste-a3169",
+        storageBucket: "teste-a3169.appspot.com",
+        messagingSenderId: "564753177105",
+        appId: "1:564753177105:web:73b544a377d5b76d63afb0"
+      };
+
+      // Initialize Firebase
+      const app = initializeApp(firebaseConfig);
+      const storage = getStorage(app);
+    </script>
+
     <script src="script.js"></script>
 </body>
 </html>

@@ -28,8 +28,7 @@
 
         video, canvas {
             width: 100%;
-            max-width: 1080px;
-            height: auto;
+            height: 100%;
         }
 
         canvas {
@@ -69,11 +68,11 @@
 <body>
     <h1>Tire sua Selfie com Moldura</h1>
     <div id="container">
-        <video id="video" width="1080" height="1080" autoplay playsinline></video>
-        <canvas id="frame-canvas" width="1080" height="1080"></canvas>
+        <video id="video" autoplay playsinline></video>
+        <canvas id="frame-canvas"></canvas>
     </div>
     <button id="snap">Tirar Foto</button>
-    <canvas id="canvas" width="1080" height="1080" style="display:none;"></canvas>
+    <canvas id="canvas" style="display:none;"></canvas>
     <button id="save">Salvar no Firebase</button>
     <button id="view-gallery">Ver Galeria</button>
     <div id="message"></div>

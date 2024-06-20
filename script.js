@@ -16,11 +16,19 @@ navigator.mediaDevices.getUserMedia({ video: true })
 // Tirar a foto e aplicar a moldura
 const canvas = document.getElementById('canvas');
 const context = canvas.getContext('2d');
-const frame = document.getElementById('frame');
 
 document.getElementById('snap').addEventListener('click', () => {
     context.drawImage(video, 0, 0, canvas.width, canvas.height);
-    context.drawImage(frame, 0, 0, canvas.width, canvas.height);
+
+    // Adicionar enquadramento
+    context.strokeStyle = 'red';
+    context.lineWidth = 10;
+    context.strokeRect(0, 0, canvas.width, canvas.height);
+
+    // Adicionar legenda
+    context.font = '30px Arial';
+    context.fillStyle = 'white';
+    context.fillText('XV MaFer', 10, canvas.height - 20);
 });
 
 // Salvar no Google Drive
@@ -34,7 +42,11 @@ document.getElementById('save').addEventListener('click', () => {
         }).then(() => {
             gapi.auth2.getAuthInstance().signIn().then(() => {
                 saveFile();
+            }).catch(err => {
+                showMessage("Erro ao fazer login: " + err);
             });
+        }).catch(err => {
+            showMessage("Erro ao inicializar cliente: " + err);
         });
     }
 
@@ -58,8 +70,22 @@ document.getElementById('save').addEventListener('click', () => {
                 },
                 body: form
             }).then(response => response.json())
-            .then(value => console.log(value))
-            .catch(err => console.error("Erro ao carregar o arquivo: " + err));
+            .then(value => {
+                if (value.id) {
+                    showMessage("Arquivo salvo com sucesso!");
+                } else {
+                    showMessage("Erro ao salvar o arquivo.");
+                }
+            })
+            .catch(err => {
+                showMessage("Erro ao carregar o arquivo: " + err);
+            });
         });
+    }
+
+    function showMessage(message) {
+        const messageDiv = document.getElementById('message');
+        messageDiv.style.display = 'block';
+        messageDiv.textContent = message;
     }
 });

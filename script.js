@@ -1,5 +1,3 @@
-// script.js
-
 import { storage, ref, uploadBytesResumable, getDownloadURL } from './index.html';
 
 // Configurar a câmera

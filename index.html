@@ -102,6 +102,13 @@
                 showMessage("Erro ao acessar a câmera: " + err.message);
             });
 
+        // Carregar a moldura
+        const frame = new Image();
+        frame.src = '/mnt/data/—Pngtree—flat polaroid frame_6486826 1.png';
+        frame.onload = () => {
+            console.log("Moldura carregada com sucesso");
+        };
+        
         // Tirar a foto e aplicar a moldura
         const canvas = document.getElementById('canvas');
         const context = canvas.getContext('2d');
@@ -109,10 +116,8 @@
         document.getElementById('snap').addEventListener('click', () => {
             context.drawImage(video, 0, 0, canvas.width, canvas.height);
 
-            // Adicionar enquadramento
-            context.strokeStyle = 'red';
-            context.lineWidth = 10;
-            context.strokeRect(0, 0, canvas.width, canvas.height);
+            // Adicionar a moldura
+            context.drawImage(frame, 0, 0, canvas.width, canvas.height);
 
             // Adicionar legenda
             context.font = '30px Arial';

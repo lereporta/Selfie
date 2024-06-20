@@ -25,7 +25,7 @@ function showMessage(message) {
 
 // Configurar a câmera
 const video = document.getElementById('video');
-navigator.mediaDevices.getUserMedia({ video: true })
+navigator.mediaDevices.getUserMedia({ video: { width: { ideal: 1080 }, height: { ideal: 1080 } } })
     .then(stream => {
         video.srcObject = stream;
         video.onloadedmetadata = () => {

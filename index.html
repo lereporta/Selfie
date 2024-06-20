@@ -84,6 +84,13 @@
         const app = initializeApp(firebaseConfig);
         const storage = getStorage(app);
 
+        // Função para exibir mensagens
+        function showMessage(message) {
+            const messageDiv = document.getElementById('message');
+            messageDiv.style.display = 'block';
+            messageDiv.innerHTML = message;
+        }
+
         // Configurar a câmera
         const video = document.getElementById('video');
         navigator.mediaDevices.getUserMedia({ video: true })
@@ -163,12 +170,6 @@
                     showMessage(`Erro ao listar imagens: ${err.message}`);
                 });
         });
-
-        function showMessage(message) {
-            const messageDiv = document.getElementById('message');
-            messageDiv.style.display = 'block';
-            messageDiv.innerHTML = message;
-        }
     </script>
 </body>
 </html>

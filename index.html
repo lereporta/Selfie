@@ -55,11 +55,13 @@
     <button id="save">Salvar no Firebase</button>
     <div id="message"></div>
 
-    <!-- Importar SDKs do Firebase -->
+    <!-- Adicione os SDKs do Firebase -->
     <script type="module">
+      // Import the functions you need from the SDKs you need
       import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
       import { getStorage, ref, uploadBytesResumable, getDownloadURL } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-storage.js";
 
+      // Your web app's Firebase configuration
       const firebaseConfig = {
         apiKey: "AIzaSyBJQ-AurpB2bRDnxo0uQtCnFPlZh3kGu5k",
         authDomain: "teste-a3169.firebaseapp.com",
@@ -72,8 +74,11 @@
       // Initialize Firebase
       const app = initializeApp(firebaseConfig);
       const storage = getStorage(app);
+
+      // Export the storage to use it in script.js
+      export { storage, ref, uploadBytesResumable, getDownloadURL };
     </script>
 
-    <script src="script.js"></script>
+    <script type="module" src="script.js"></script>
 </body>
 </html>

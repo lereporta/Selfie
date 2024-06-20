@@ -75,7 +75,6 @@
         const app = initializeApp(firebaseConfig);
         const storage = getStorage(app);
 
-        // Funções do script.js dentro deste script para simplificar
         // Configurar a câmera
         const video = document.getElementById('video');
         navigator.mediaDevices.getUserMedia({ video: true })
@@ -123,10 +122,12 @@
                     () => {
                         getDownloadURL(uploadTask.snapshot.ref).then((downloadURL) => {
                             showMessage(`Arquivo salvo com sucesso! URL: <a href="${downloadURL}" target="_blank">${downloadURL}</a>`);
+                        }).catch(err => {
+                            showMessage(`Erro ao obter o URL de download: ${err.message}`);
                         });
                     }
                 );
-            });
+            }, 'image/png');
         });
 
         function showMessage(message) {

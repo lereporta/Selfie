@@ -22,7 +22,7 @@
 
         video, canvas {
             width: 100%;
-            max-width: 640px;
+            max-width: 1080px;
             height: auto;
         }
 
@@ -56,9 +56,9 @@
 </head>
 <body>
     <h1>Tire sua Selfie com Moldura</h1>
-    <video id="video" autoplay playsinline></video>
+    <video id="video" width="1080" height="1080" autoplay playsinline></video>
     <button id="snap">Tirar Foto</button>
-    <canvas id="canvas" style="display:none;"></canvas>
+    <canvas id="canvas" width="1080" height="1080" style="display:none;"></canvas>
     <button id="save">Salvar no Firebase</button>
     <button id="view-gallery">Ver Galeria</button>
     <div id="message"></div>
@@ -93,7 +93,7 @@
 
         // Configurar a câmera
         const video = document.getElementById('video');
-        navigator.mediaDevices.getUserMedia({ video: true })
+        navigator.mediaDevices.getUserMedia({ video: { width: 1080, height: 1080 } })
             .then(stream => {
                 video.srcObject = stream;
             })

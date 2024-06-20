@@ -12,6 +12,7 @@ navigator.mediaDevices.getUserMedia({ video: true })
     })
     .catch(err => {
         console.error("Erro ao acessar a câmera: " + err);
+        showMessage("Erro ao acessar a câmera: " + err.message);
     });
 
 // Tirar a foto e aplicar a moldura
@@ -44,10 +45,10 @@ document.getElementById('save').addEventListener('click', () => {
             gapi.auth2.getAuthInstance().signIn().then(() => {
                 saveFile();
             }).catch(err => {
-                showMessage("Erro ao fazer login: " + err);
+                showMessage("Erro ao fazer login: " + JSON.stringify(err, null, 2));
             });
         }).catch(err => {
-            showMessage("Erro ao inicializar cliente: " + err);
+            showMessage("Erro ao inicializar cliente: " + JSON.stringify(err, null, 2));
         });
     }
 
@@ -80,7 +81,7 @@ document.getElementById('save').addEventListener('click', () => {
                 }
             })
             .catch(err => {
-                showMessage("Erro ao carregar o arquivo: " + err);
+                showMessage("Erro ao carregar o arquivo: " + err.message);
             });
         });
     }

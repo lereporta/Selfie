@@ -42,30 +42,19 @@ function adjustCanvasSize() {
     const video = document.getElementById('video');
     const frameCanvas = document.getElementById('frame-canvas');
     const captureCanvas = document.getElementById('canvas');
+    frameCanvas.width = video.videoWidth;
+    frameCanvas.height = video.videoHeight;
+    captureCanvas.width = video.videoWidth;
+    captureCanvas.height = video.videoHeight;
 
-    const ratio = video.videoWidth / video.videoHeight;
-    const width = video.clientWidth;
-    const height = width / ratio;
-
-    frameCanvas.width = width;
-    frameCanvas.height = height;
-    captureCanvas.width = width;
-    captureCanvas.height = height;
-
+    // Carregar a moldura SVG
     const frameContext = frameCanvas.getContext('2d');
-    if (!window.frameImage) {
-        window.frameImage = new Image();
-        window.frameImage.src = 'moldura.svg';
-        window.frameImage.onload = () => {
-            frameContext.drawImage(window.frameImage, 0, 0, width, height);
-        };
-    } else {
-        frameContext.drawImage(window.frameImage, 0, 0, width, height);
-    }
+    const frameImage = new Image();
+    frameImage.src = 'moldura.svg';  // Carregando 'moldura.svg' diretamente
+    frameImage.onload = () => {
+        frameContext.drawImage(frameImage, 0, 0, frameCanvas.width, frameCanvas.height);
+    };
 }
-
-window.addEventListener('resize', adjustCanvasSize);
-window.addEventListener('orientationchange', adjustCanvasSize);
 
 // Tirar a foto e aplicar a moldura
 const captureCanvas = document.getElementById('canvas');
@@ -73,34 +62,24 @@ const captureContext = captureCanvas.getContext('2d');
 
 document.getElementById('snap').addEventListener('click', () => {
     captureContext.drawImage(video, 0, 0, captureCanvas.width, captureCanvas.height);
-    if (window.frameImage) {
-        captureContext.drawImage(window.frameImage, 0, 0, captureCanvas.width, captureCanvas.height);
-    }
-    captureContext.font = '30px Arial';
-    captureContext.fillStyle = 'white';
-    captureContext.fillText('XV MaFer', 10, captureCanvas.height - 20);
-    captureCanvas.style.display = 'block';
+    const frameImage = new Image();
+    frameImage.src = 'moldura.svg';  // Carregando 'moldura.svg' diretamente
+    frameImage.onload = () => {
+        captureContext.drawImage(frameImage, 0, 0, captureCanvas.width, captureCanvas.height);
+        captureContext.font = '30px Arial';
+        captureContext.fillStyle = 'white';
+        captureContext.fillText('XV MaFer', 10, captureCanvas.height - 20);
+        captureCanvas.style.display = 'block';
+    };
 });
 
 // Salvar no Firebase Storage
 document.getElementById('save').addEventListener('click', () => {
-    if (!captureCanvas.getContext('2d')) {
-        console.error("Canvas está vazio");
-        showMessage("Canvas está vazio");
-        return;
-    }
-
     captureCanvas.toBlob(blob => {
-        if (!blob) {
-            console.error("Falha ao criar imagem para upload");
-            showMessage("Falha ao criar imagem para upload");
-            return;
-        }
-
         const storageRef = ref(storage, `selfies/${Date.now()}_selfie_com_moldura.png`);
         const uploadTask = uploadBytesResumable(storageRef, blob);
 
-        uploadTask.on('state_changed',
+        uploadTask.on('state_changed', 
             (snapshot) => {
                 const progress = (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
                 console.log(`Upload is ${progress}% done`);
@@ -112,7 +91,6 @@ document.getElementById('save').addEventListener('click', () => {
             },
             () => {
                 getDownloadURL(uploadTask.snapshot.ref).then((downloadURL) => {
-                    console.log(`Arquivo salvo com sucesso! URL: ${downloadURL}`);
                     showMessage(`Arquivo salvo com sucesso! URL: <a href="${downloadURL}" target="_blank">${downloadURL}</a>`);
                 }).catch(err => {
                     console.error(`Erro ao obter o URL de download: ${err.message}`);
@@ -126,12 +104,10 @@ document.getElementById('save').addEventListener('click', () => {
 // Ver Galeria
 document.getElementById('view-gallery').addEventListener('click', () => {
     const galleryRef = ref(storage, 'selfies/');
-    console.log('Tentando listar imagens na pasta selfies/');
     listAll(galleryRef)
         .then(res => {
-            console.log('Imagens listadas:', res);
             const galleryDiv = document.getElementById('gallery');
-            galleryDiv.innerHTML = ''; // Limpar galeria
+            galleryDiv.innerHTML = '';
             res.items.forEach(itemRef => {
                 getDownloadURL(itemRef).then(url => {
                     const img = document.createElement('img');

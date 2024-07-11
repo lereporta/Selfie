@@ -47,10 +47,10 @@ function adjustCanvasSize() {
     captureCanvas.width = video.videoWidth;
     captureCanvas.height = video.videoHeight;
 
-    // Carregar a moldura SVG
+    // Carregar a moldura
     const frameContext = frameCanvas.getContext('2d');
     const frameImage = new Image();
-    frameImage.src = 'moldura.svg';  // Carregando 'moldura.svg' diretamente
+    frameImage.src = 'frame.png'; // URL da sua imagem de moldura
     frameImage.onload = () => {
         frameContext.drawImage(frameImage, 0, 0, frameCanvas.width, frameCanvas.height);
     };
@@ -62,10 +62,14 @@ const captureContext = captureCanvas.getContext('2d');
 
 document.getElementById('snap').addEventListener('click', () => {
     captureContext.drawImage(video, 0, 0, captureCanvas.width, captureCanvas.height);
+
+    // Adicionar a moldura
     const frameImage = new Image();
-    frameImage.src = 'moldura.svg';  // Carregando 'moldura.svg' diretamente
+    frameImage.src = 'frame.png'; // URL da sua imagem de moldura
     frameImage.onload = () => {
         captureContext.drawImage(frameImage, 0, 0, captureCanvas.width, captureCanvas.height);
+
+        // Adicionar legenda
         captureContext.font = '30px Arial';
         captureContext.fillStyle = 'white';
         captureContext.fillText('XV MaFer', 10, captureCanvas.height - 20);
@@ -81,19 +85,17 @@ document.getElementById('save').addEventListener('click', () => {
 
         uploadTask.on('state_changed', 
             (snapshot) => {
+                // Progresso da upload
                 const progress = (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
                 console.log(`Upload is ${progress}% done`);
-                showMessage(`Upload is ${progress}% done`);
             },
             (error) => {
-                console.error(`Erro ao salvar o arquivo: ${error.message}`);
                 showMessage(`Erro ao salvar o arquivo: ${error.message}`);
             },
             () => {
                 getDownloadURL(uploadTask.snapshot.ref).then((downloadURL) => {
                     showMessage(`Arquivo salvo com sucesso! URL: <a href="${downloadURL}" target="_blank">${downloadURL}</a>`);
                 }).catch(err => {
-                    console.error(`Erro ao obter o URL de download: ${err.message}`);
                     showMessage(`Erro ao obter o URL de download: ${err.message}`);
                 });
             }
@@ -104,10 +106,12 @@ document.getElementById('save').addEventListener('click', () => {
 // Ver Galeria
 document.getElementById('view-gallery').addEventListener('click', () => {
     const galleryRef = ref(storage, 'selfies/');
+    console.log('Tentando listar imagens na pasta selfies/');
     listAll(galleryRef)
         .then(res => {
+            console.log('Imagens listadas:', res);
             const galleryDiv = document.getElementById('gallery');
-            galleryDiv.innerHTML = '';
+            galleryDiv.innerHTML = ''; // Limpar galeria
             res.items.forEach(itemRef => {
                 getDownloadURL(itemRef).then(url => {
                     const img = document.createElement('img');

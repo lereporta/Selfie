@@ -47,10 +47,10 @@ function adjustCanvasSize() {
     captureCanvas.width = video.videoWidth;
     captureCanvas.height = video.videoHeight;
 
-    // Carregar a moldura
+    // Carregar a moldura SVG
     const frameContext = frameCanvas.getContext('2d');
     const frameImage = new Image();
-    frameImage.src = 'frame';
+    frameImage.src = 'moldura.svg';  // Usando 'moldura.svg'
     frameImage.onload = () => {
         frameContext.drawImage(frameImage, 0, 0, frameCanvas.width, frameCanvas.height);
     };
@@ -65,10 +65,9 @@ document.getElementById('snap').addEventListener('click', () => {
 
     // Adicionar a moldura
     const frameImage = new Image();
-    frameImage.src = 'frame';
+    frameImage.src = 'moldura.svg';  // Usando 'moldura.svg'
     frameImage.onload = () => {
         captureContext.drawImage(frameImage, 0, 0, captureCanvas.width, captureCanvas.height);
-
         // Adicionar legenda
         captureContext.font = '30px Arial';
         captureContext.fillStyle = 'white';
@@ -80,23 +79,23 @@ document.getElementById('snap').addEventListener('click', () => {
 // Salvar no Firebase Storage
 document.getElementById('save').addEventListener('click', () => {
     captureCanvas.toBlob(blob => {
-        const storageRef = ref(storage, selfies/${Date.now()}_selfie_com_moldura.png);
+        const storageRef = ref(storage, `selfies/${Date.now()}_selfie_com_moldura.png`);
         const uploadTask = uploadBytesResumable(storageRef, blob);
 
         uploadTask.on('state_changed', 
             (snapshot) => {
-                // Progresso da upload
                 const progress = (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
-                console.log(Upload is ${progress}% done);
+                console.log(`Upload is ${progress}% done`);
+                showMessage(`Upload is ${progress}% done`);
             },
             (error) => {
-                showMessage(Erro ao salvar o arquivo: ${error.message});
+                showMessage(`Erro ao salvar o arquivo: ${error.message}`);
             },
             () => {
                 getDownloadURL(uploadTask.snapshot.ref).then((downloadURL) => {
-                    showMessage(Arquivo salvo com sucesso! URL: <a href="${downloadURL}" target="_blank">${downloadURL}</a>);
+                    showMessage(`Arquivo salvo com sucesso! URL: <a href="${downloadURL}" target="_blank">${downloadURL}</a>`);
                 }).catch(err => {
-                    showMessage(Erro ao obter o URL de download: ${err.message});
+                    showMessage(`Erro ao obter o URL de download: ${err.message}`);
                 });
             }
         );
@@ -111,7 +110,7 @@ document.getElementById('view-gallery').addEventListener('click', () => {
         .then(res => {
             console.log('Imagens listadas:', res);
             const galleryDiv = document.getElementById('gallery');
-            galleryDiv.innerHTML = ''; // Limpar galeria
+            galleryDiv.innerHTML = '';
             res.items.forEach(itemRef => {
                 getDownloadURL(itemRef).then(url => {
                     const img = document.createElement('img');
@@ -121,12 +120,12 @@ document.getElementById('view-gallery').addEventListener('click', () => {
                     galleryDiv.appendChild(img);
                 }).catch(err => {
                     console.error('Erro ao obter o URL de download:', err);
-                    showMessage(Erro ao obter o URL de download: ${err.message});
+                    showMessage(`Erro ao obter o URL de download: ${err.message}`);
                 });
             });
         })
         .catch(err => {
             console.error('Erro ao listar imagens:', err);
-            showMessage(Erro ao listar imagens: ${err.message});
+            showMessage(`Erro ao listar imagens: ${err.message}`);
         });
 });

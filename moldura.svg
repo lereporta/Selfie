@@ -1,0 +1,129 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg id="Camada_2" data-name="Camada 2" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 276 386">
+  <defs>
+    <style>
+      .cls-1 {
+        letter-spacing: 0em;
+      }
+
+      .cls-2 {
+        letter-spacing: 0em;
+      }
+
+      .cls-3, .cls-4 {
+        stroke-width: 1.5px;
+      }
+
+      .cls-3, .cls-4, .cls-5 {
+        stroke: #3c3c3b;
+      }
+
+      .cls-3, .cls-4, .cls-5, .cls-6 {
+        fill: none;
+      }
+
+      .cls-3, .cls-6 {
+        stroke-miterlimit: 10;
+      }
+
+      .cls-7, .cls-8, .cls-9 {
+        stroke-width: 0px;
+      }
+
+      .cls-7, .cls-10 {
+        fill: #3c3c3b;
+      }
+
+      .cls-4, .cls-5 {
+        stroke-linejoin: round;
+      }
+
+      .cls-8 {
+        fill: #6ac5df;
+      }
+
+      .cls-5 {
+        stroke-width: 1.35px;
+      }
+
+      .cls-11 {
+        fill: #3c3c3b;
+        font-family: Poppins-Light, Poppins;
+        font-size: 12px;
+        font-weight: 300;
+      }
+
+      .cls-12 {
+        letter-spacing: -.03em;
+      }
+
+      .cls-13 {
+        fill: #36a9c2;
+      }
+
+      .cls-13, .cls-10 {
+        font-family: Metropolis-Medium, 'Metropolis Medium';
+        font-size: 8.72px;
+        font-weight: 500;
+      }
+
+      .cls-6 {
+        stroke: #6ac5df;
+      }
+
+      .cls-14 {
+        letter-spacing: 0em;
+      }
+
+      .cls-15 {
+        letter-spacing: 0em;
+      }
+
+      .cls-9 {
+        fill: #fff;
+        filter: url(#drop-shadow-1);
+      }
+    </style>
+    <filter id="drop-shadow-1" filterUnits="userSpaceOnUse">
+      <feOffset dx="5" dy="5"/>
+      <feGaussianBlur result="blur" stdDeviation="3"/>
+      <feFlood flood-color="#000" flood-opacity=".3"/>
+      <feComposite in2="blur" operator="in"/>
+      <feComposite in="SourceGraphic"/>
+    </filter>
+  </defs>
+  <g id="Elements">
+    <path class="cls-9" d="M4.32,4.29v367.49h257.36V4.29H4.32ZM247.79,280.42H18.21V50.84h229.59v229.59Z"/>
+    <circle class="cls-4" cx="35.57" cy="29.38" r="11.28" transform="translate(-8.5 15.72) rotate(-22.34)"/>
+    <text class="cls-10" transform="translate(41.5 326.46)"><tspan x="0" y="0">362 likes</tspan></text>
+    <text class="cls-10" transform="translate(28.44 343.96)"><tspan x="0" y="0">ani</tspan><tspan class="cls-1" x="11.08" y="0">v</tspan><tspan class="cls-2" x="15.19" y="0">ersá</tspan><tspan class="cls-14" x="30.07" y="0">r</tspan><tspan x="32.96" y="0">io</tspan></text>
+    <text class="cls-13" transform="translate(95.94 343.96)"><tspan x="0" y="0">#15anos</tspan></text>
+    <text class="cls-13" transform="translate(142.67 343.96)"><tspan x="0" y="0">#</tspan><tspan class="cls-15" x="4.33" y="0">M</tspan><tspan x="11.4" y="0">a</tspan><tspan class="cls-12" x="15.6" y="0">F</tspan><tspan x="19.58" y="0">er</tspan></text>
+    <g>
+      <path class="cls-7" d="M236.51,28.84c0,.66-.54,1.2-1.2,1.2s-1.2-.54-1.2-1.2.54-1.2,1.2-1.2,1.2.54,1.2,1.2Z"/>
+      <path class="cls-7" d="M240.14,28.84c0,.66-.54,1.2-1.2,1.2s-1.2-.54-1.2-1.2.54-1.2,1.2-1.2,1.2.54,1.2,1.2Z"/>
+      <path class="cls-7" d="M243.78,28.84c0,.66-.54,1.2-1.2,1.2s-1.2-.54-1.2-1.2.54-1.2,1.2-1.2,1.2.54,1.2,1.2Z"/>
+    </g>
+    <path class="cls-4" d="M33.06,307.02l6.59-5.33c.73-.59,1.31-1.37,1.6-2.3,1.21-3.8-2.23-7.86-6.31-6.26-1.1.43-1.89,1.87-1.89,1.87,0,0-.79-1.44-1.89-1.87-4.07-1.59-7.52,2.47-6.31,6.26.29.92.88,1.71,1.6,2.3l6.59,5.33Z"/>
+    <path class="cls-7" d="M33.06,327.66l4-3.24c.44-.36.8-.83.97-1.4.73-2.3-1.36-4.77-3.83-3.8-.67.26-1.15,1.14-1.15,1.14,0,0-.48-.88-1.15-1.14-2.47-.97-4.56,1.5-3.83,3.8.18.56.53,1.04.97,1.4l4,3.24Z"/>
+    <path class="cls-3" d="M69.81,302.51c.75-1.49,1.03-3.26.6-5.12-.66-2.81-2.98-5.04-5.82-5.57-5.22-.98-9.71,3.49-8.78,8.71.53,2.94,2.87,5.32,5.79,5.92,1.57.32,3.07.14,4.38-.4.32-.13.67-.17,1-.06l2.22.68c.51.16,1.01-.29.91-.81l-.45-2.4c-.06-.32,0-.65.15-.94Z"/>
+    <path class="cls-4" d="M240.7,305.06l-4.76-4.08-4.76,4.08c-.34.29-.86.05-.86-.4v-11.42c0-.47.38-.85.85-.85h9.53c.47,0,.85.38.85.85v11.42c0,.44-.52.68-.86.4Z"/>
+    <g>
+      <g>
+        <path class="cls-8" d="M182.9,27.56v1.45h2.63v.68h-2.63v2.16h-.74v-4.97h3.65v.68h-2.92Z"/>
+        <path class="cls-8" d="M186.98,29.36c0-1.4,1.19-2.57,2.58-2.57s2.57,1.17,2.57,2.57-1.17,2.58-2.57,2.58-2.58-1.18-2.58-2.58ZM191.39,29.36c0-1.03-.83-1.9-1.82-1.9s-1.83.87-1.83,1.9.84,1.9,1.83,1.9,1.82-.87,1.82-1.9Z"/>
+        <path class="cls-8" d="M196.88,31.17v.68h-3.37v-4.97h.74v4.29h2.63Z"/>
+        <path class="cls-8" d="M201.5,31.17v.68h-3.37v-4.97h.74v4.29h2.63Z"/>
+        <path class="cls-8" d="M202.62,29.36c0-1.4,1.19-2.57,2.58-2.57s2.57,1.17,2.57,2.57-1.17,2.58-2.57,2.58-2.58-1.18-2.58-2.58ZM207.02,29.36c0-1.03-.83-1.9-1.82-1.9s-1.83.87-1.83,1.9.84,1.9,1.83,1.9,1.82-.87,1.82-1.9Z"/>
+        <path class="cls-8" d="M208.72,26.88h.81l1.22,3.79,1.25-3.79h.81l1.24,3.79,1.22-3.79h.81l-1.64,4.97h-.73l-1.31-3.96-1.32,3.96h-.73l-1.63-4.97Z"/>
+      </g>
+      <path class="cls-6" d="M172.81,22.04h52.64c1.79,0,3.24,1.45,3.24,3.24v8.16c0,1.79-1.45,3.24-3.24,3.24h-52.64c-1.79,0-3.24-1.45-3.24-3.24v-8.16c0-1.79,1.45-3.24,3.24-3.24Z"/>
+    </g>
+    <g>
+      <polygon class="cls-5" points="84.83 292.51 102.42 292.51 91.18 307.52 91.17 297.94 84.83 292.51"/>
+      <line class="cls-5" x1="91.17" y1="297.94" x2="102.42" y2="292.51"/>
+    </g>
+    <text class="cls-11" transform="translate(56.45 35.59)"><tspan x="0" y="0">ie.mafer</tspan></text>
+    <image width="122" height="122" transform="translate(24.69 18.5) scale(.18)" xlink:href="../../Ellipse 79.png"/>
+  </g>
+</svg>

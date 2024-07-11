@@ -42,25 +42,32 @@ function adjustCanvasSize() {
     const video = document.getElementById('video');
     const frameCanvas = document.getElementById('frame-canvas');
     const captureCanvas = document.getElementById('canvas');
-    frameCanvas.width = video.videoWidth;
-    frameCanvas.height = video.videoHeight;
-    captureCanvas.width = video.videoWidth;
-    captureCanvas.height = video.videoHeight;
 
-    // Carregar a moldura
+    // Ajusta o tamanho do canvas para corresponder à proporção do vídeo
+    const ratio = video.videoWidth / video.videoHeight;
+    const width = video.clientWidth; // largura do elemento de vídeo na página
+    const height = width / ratio; // calcula a altura baseada na largura e proporção
+
+    frameCanvas.width = width;
+    frameCanvas.height = height;
+    captureCanvas.width = width;
+    captureCanvas.height = height;
+
+    // Carregar e desenhar a moldura
     const frameContext = frameCanvas.getContext('2d');
     if (!window.frameImage) {
-    window.frameImage = new Image();
-    window.frameImage.src = 'moldura.svg'; // Caminho atualizado para a moldura
-    window.frameImage.onload = () => {
-        frameContext.drawImage(window.frameImage, 0, 0, frameCanvas.width, frameCanvas.height);
-    };
-} else 
-    {
-    frameContext.drawImage(window.frameImage, 0, 0, frameCanvas.width, frameCanvas.height);
+        window.frameImage = new Image();
+        window.frameImage.src = 'moldura.svg';
+        window.frameImage.onload = () => {
+            frameContext.drawImage(window.frameImage, 0, 0, width, height);
+        };
+    } else {
+        frameContext.drawImage(window.frameImage, 0, 0, width, height);
+    }
 }
 
-}
+window.addEventListener('resize', adjustCanvasSize);
+window.addEventListener('orientationchange', adjustCanvasSize);
 
 // Tirar a foto e aplicar a moldura
 const captureCanvas = document.getElementById('canvas');

@@ -4,12 +4,12 @@ import { getStorage, ref, uploadBytesResumable, getDownloadURL, listAll } from "
 
 // Your web app's Firebase configuration
 const firebaseConfig = {
-    apiKey: "AIzaSyDV447G0fPHuVoITWjXMJ-_uoZJ8LhA994",
-    authDomain: "testedoteste-d5361.firebaseapp.com",
-    projectId: "testedoteste-d5361",
-    storageBucket: "testedoteste-d5361.appspot.com",
-    messagingSenderId: "199930490793",
-    appId: "1:199930490793:web:c79d02d9ddd2635e2e9eb8"
+    apiKey: "your_api_key",
+    authDomain: "your_project_id.firebaseapp.com",
+    projectId: "your_project_id",
+    storageBucket: "your_project_id.appspot.com",
+    messagingSenderId: "your_sender_id",
+    appId: "your_app_id"
 };
 
 // Initialize Firebase
@@ -49,12 +49,18 @@ function adjustCanvasSize() {
 
     // Carregar a moldura
     const frameContext = frameCanvas.getContext('2d');
-    const frameImage = new Image();
-    frameImage.src = 'frame';
-    frameImage.onload = () => {
-        frameContext.drawImage(frameImage, 0, 0, frameCanvas.width, frameCanvas.height);
-    };
+    if (!window.frameImage) {
+        window.frameImage = new Image();
+        window.frameImage.src = 'frame.svg'; // Atualizado para SVG
+        window.frameImage.onload = () => {
+            frameContext.drawImage(window.frameImage, 0, 0, frameCanvas.width, frameCanvas.height);
+        };
+    } else {
+        frameContext.drawImage(window.frameImage, 0, 0, frameCanvas.width, frameCanvas.height);
+    }
 }
+
+window.addEventListener('resize', adjustCanvasSize);
 
 // Tirar a foto e aplicar a moldura
 const captureCanvas = document.getElementById('canvas');
@@ -62,19 +68,26 @@ const captureContext = captureCanvas.getContext('2d');
 
 document.getElementById('snap').addEventListener('click', () => {
     captureContext.drawImage(video, 0, 0, captureCanvas.width, captureCanvas.height);
-
     // Adicionar a moldura
-    const frameImage = new Image();
-    frameImage.src = 'frame';
-    frameImage.onload = () => {
-        captureContext.drawImage(frameImage, 0, 0, captureCanvas.width, captureCanvas.height);
-
+    if (!window.frameImage) {
+        window.frameImage = new Image();
+        window.frameImage.src = 'frame.svg'; // Atualizado para SVG
+        window.frameImage.onload = () => {
+            captureContext.drawImage(window.frameImage, 0, 0, captureCanvas.width, captureCanvas.height);
+            // Adicionar legenda
+            captureContext.font = '30px Arial';
+            captureContext.fillStyle = 'white';
+            captureContext.fillText('XV MaFer', 10, captureCanvas.height - 20);
+            captureCanvas.style.display = 'block';
+        };
+    } else {
+        captureContext.drawImage(window.frameImage, 0, 0, captureCanvas.width, captureCanvas.height);
         // Adicionar legenda
         captureContext.font = '30px Arial';
         captureContext.fillStyle = 'white';
         captureContext.fillText('XV MaFer', 10, captureCanvas.height - 20);
         captureCanvas.style.display = 'block';
-    };
+    }
 });
 
 // Salvar no Firebase Storage

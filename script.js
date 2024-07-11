@@ -50,14 +50,16 @@ function adjustCanvasSize() {
     // Carregar a moldura
     const frameContext = frameCanvas.getContext('2d');
     if (!window.frameImage) {
-        window.frameImage = new Image();
-        window.frameImage.src = 'frame/moldura.svg';
-        window.frameImage.onload = () => {
-            frameContext.drawImage(window.frameImage, 0, 0, frameCanvas.width, frameCanvas.height);
-        };
-    } else {
+    window.frameImage = new Image();
+    window.frameImage.src = 'moldura.svg'; // Caminho atualizado para a moldura
+    window.frameImage.onload = () => {
         frameContext.drawImage(window.frameImage, 0, 0, frameCanvas.width, frameCanvas.height);
-    }
+    };
+} else 
+    {
+    frameContext.drawImage(window.frameImage, 0, 0, frameCanvas.width, frameCanvas.height);
+}
+
 }
 
 // Tirar a foto e aplicar a moldura

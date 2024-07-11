@@ -67,14 +67,14 @@ const captureCanvas = document.getElementById('canvas');
 const captureContext = captureCanvas.getContext('2d');
 
 document.getElementById('snap').addEventListener('click', () => {
-    // Inverte o canvas para a captura correta
+    // Preparar o canvas para captura correta
     captureContext.save(); // Salva o estado atual do contexto
-    captureContext.scale(-1, 1); // Aplica a inversão
+    captureContext.scale(-1, 1); // Aplica inversão para desfazer o espelho
     captureContext.drawImage(video, -captureCanvas.width, 0, captureCanvas.width, captureCanvas.height);
 
     // Adicionar a moldura
     if (window.frameImage) {
-        captureContext.drawImage(window.frameImage, -captureCanvas.width, 0, captureCanvas.width, captureCanvas.height);
+        captureContext.drawImage(window.frameImage, 0, 0, captureCanvas.width, captureCanvas.height);
     }
 
     captureContext.restore(); // Restaura o estado original (não invertido)

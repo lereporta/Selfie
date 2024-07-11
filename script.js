@@ -50,10 +50,9 @@ function adjustCanvasSize() {
     // Carregar a moldura
     const frameContext = frameCanvas.getContext('2d');
     const frameImage = new Image();
-    frameImage.src = 'frame'; // Verifique se o caminho da imagem está correto
+    frameImage.src = 'frame';
     frameImage.onload = () => {
         frameContext.drawImage(frameImage, 0, 0, frameCanvas.width, frameCanvas.height);
-        console.log("Moldura carregada");
     };
 }
 
@@ -62,12 +61,11 @@ const captureCanvas = document.getElementById('canvas');
 const captureContext = captureCanvas.getContext('2d');
 
 document.getElementById('snap').addEventListener('click', () => {
-    console.log("Botão Tirar Foto clicado");
     captureContext.drawImage(video, 0, 0, captureCanvas.width, captureCanvas.height);
 
     // Adicionar a moldura
     const frameImage = new Image();
-    frameImage.src = 'frame'; // Verifique se o caminho da imagem está correto
+    frameImage.src = 'frame';
     frameImage.onload = () => {
         captureContext.drawImage(frameImage, 0, 0, captureCanvas.width, captureCanvas.height);
 
@@ -76,13 +74,11 @@ document.getElementById('snap').addEventListener('click', () => {
         captureContext.fillStyle = 'white';
         captureContext.fillText('XV MaFer', 10, captureCanvas.height - 20);
         captureCanvas.style.display = 'block';
-        console.log("Foto tirada e moldura aplicada");
     };
 });
 
 // Salvar no Firebase Storage
 document.getElementById('save').addEventListener('click', () => {
-    console.log("Botão Salvar clicado");
     captureCanvas.toBlob(blob => {
         const storageRef = ref(storage, `selfies/${Date.now()}_selfie_com_moldura.png`);
         const uploadTask = uploadBytesResumable(storageRef, blob);

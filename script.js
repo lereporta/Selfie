@@ -62,16 +62,10 @@ const captureContext = captureCanvas.getContext('2d');
 
 document.getElementById('snap').addEventListener('click', () => {
     captureContext.drawImage(video, 0, 0, captureCanvas.width, captureCanvas.height);
-
-    // Adicionar a moldura
     const frameImage = new Image();
     frameImage.src = 'moldura.svg';  // Usando 'moldura.svg'
     frameImage.onload = () => {
         captureContext.drawImage(frameImage, 0, 0, captureCanvas.width, captureCanvas.height);
-        // Adicionar legenda
-        captureContext.font = '30px Arial';
-        captureContext.fillStyle = 'white';
-        captureContext.fillText('XV MaFer', 10, captureCanvas.height - 20);
         captureCanvas.style.display = 'block';
     };
 });

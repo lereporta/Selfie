@@ -50,7 +50,7 @@ function adjustCanvasSize() {
     // Carregar a moldura
     const frameContext = frameCanvas.getContext('2d');
     const frameImage = new Image();
-    frameImage.src = 'frame.png'; // URL da sua imagem de moldura
+    frameImage.src = 'frame';
     frameImage.onload = () => {
         frameContext.drawImage(frameImage, 0, 0, frameCanvas.width, frameCanvas.height);
     };
@@ -65,7 +65,7 @@ document.getElementById('snap').addEventListener('click', () => {
 
     // Adicionar a moldura
     const frameImage = new Image();
-    frameImage.src = 'frame.png'; // URL da sua imagem de moldura
+    frameImage.src = 'frame';
     frameImage.onload = () => {
         captureContext.drawImage(frameImage, 0, 0, captureCanvas.width, captureCanvas.height);
 

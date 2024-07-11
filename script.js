@@ -60,8 +60,6 @@ function adjustCanvasSize() {
     }
 }
 
-window.addEventListener('resize', adjustCanvasSize);
-
 // Tirar a foto e aplicar a moldura
 const captureCanvas = document.getElementById('canvas');
 const captureContext = captureCanvas.getContext('2d');

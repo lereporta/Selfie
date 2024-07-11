@@ -4,7 +4,7 @@ import { getStorage, ref, uploadBytesResumable, getDownloadURL, listAll } from "
 
 // Your web app's Firebase configuration
 const firebaseConfig = {
-    apiKey: "AIzaSyDV447G0fPHuVoITWJ-_uoZJ8LhA994",
+    apiKey: "AIzaSyDV447G0fPHuVoITWjXMJ-_uoZJ8LhA994",
     authDomain: "testedoteste-d5361.firebaseapp.com",
     projectId: "testedoteste-d5361",
     storageBucket: "testedoteste-d5361.appspot.com",
@@ -50,7 +50,7 @@ function adjustCanvasSize() {
     // Carregar a moldura
     const frameContext = frameCanvas.getContext('2d');
     const frameImage = new Image();
-    frameImage.src = 'frame'; // Este deveria ser o caminho para sua imagem de moldura
+    frameImage.src = 'frame';
     frameImage.onload = () => {
         frameContext.drawImage(frameImage, 0, 0, frameCanvas.width, frameCanvas.height);
     };
@@ -65,7 +65,7 @@ document.getElementById('snap').addEventListener('click', () => {
 
     // Adicionar a moldura
     const frameImage = new Image();
-    frameImage.src = 'frame'; // Este deveria ser o caminho para sua imagem de moldura
+    frameImage.src = 'frame';
     frameImage.onload = () => {
         captureContext.drawImage(frameImage, 0, 0, captureCanvas.width, captureCanvas.height);
 
@@ -80,17 +80,53 @@ document.getElementById('snap').addEventListener('click', () => {
 // Salvar no Firebase Storage
 document.getElementById('save').addEventListener('click', () => {
     captureCanvas.toBlob(blob => {
-        const storageRef = ref(storage, `selfies/${Date.now()}_selfie_com_moldura.png`);
+        const storageRef = ref(storage, selfies/${Date.now()}_selfie_com_moldura.png);
         const uploadTask = uploadBytesResumable(storageRef, blob);
 
         uploadTask.on('state_changed', 
             (snapshot) => {
                 // Progresso da upload
                 const progress = (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
-                console.log(`Upload is ${progress}% done`);
+                console.log(Upload is ${progress}% done);
             },
             (error) => {
-                showMessage(`Erro ao salvar o arquivo: ${error.message}`);
+                showMessage(Erro ao salvar o arquivo: ${error.message});
             },
             () => {
-                getDownloadURL(uploadTask.sn
+                getDownloadURL(uploadTask.snapshot.ref).then((downloadURL) => {
+                    showMessage(Arquivo salvo com sucesso! URL: <a href="${downloadURL}" target="_blank">${downloadURL}</a>);
+                }).catch(err => {
+                    showMessage(Erro ao obter o URL de download: ${err.message});
+                });
+            }
+        );
+    }, 'image/png');
+});
+
+// Ver Galeria
+document.getElementById('view-gallery').addEventListener('click', () => {
+    const galleryRef = ref(storage, 'selfies/');
+    console.log('Tentando listar imagens na pasta selfies/');
+    listAll(galleryRef)
+        .then(res => {
+            console.log('Imagens listadas:', res);
+            const galleryDiv = document.getElementById('gallery');
+            galleryDiv.innerHTML = ''; // Limpar galeria
+            res.items.forEach(itemRef => {
+                getDownloadURL(itemRef).then(url => {
+                    const img = document.createElement('img');
+                    img.src = url;
+                    img.className = 'gallery-image';
+                    img.width = 150;
+                    galleryDiv.appendChild(img);
+                }).catch(err => {
+                    console.error('Erro ao obter o URL de download:', err);
+                    showMessage(Erro ao obter o URL de download: ${err.message});
+                });
+            });
+        })
+        .catch(err => {
+            console.error('Erro ao listar imagens:', err);
+            showMessage(Erro ao listar imagens: ${err.message});
+        });
+});

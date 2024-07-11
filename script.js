@@ -51,7 +51,7 @@ function adjustCanvasSize() {
     const frameContext = frameCanvas.getContext('2d');
     if (!window.frameImage) {
         window.frameImage = new Image();
-        window.frameImage.src = 'frame.svg'; // Atualizado para SVG
+        window.frameImage.src = 'frame.svg'; // Path to your frame image
         window.frameImage.onload = () => {
             frameContext.drawImage(window.frameImage, 0, 0, frameCanvas.width, frameCanvas.height);
         };
@@ -67,17 +67,12 @@ const captureCanvas = document.getElementById('canvas');
 const captureContext = captureCanvas.getContext('2d');
 
 document.getElementById('snap').addEventListener('click', () => {
-    // Preparar o canvas para captura correta
-    captureContext.save(); // Salva o estado atual do contexto
-    captureContext.scale(-1, 1); // Aplica inversão para desfazer o espelho
-    captureContext.drawImage(video, -captureCanvas.width, 0, captureCanvas.width, captureCanvas.height);
+    captureContext.drawImage(video, 0, 0, captureCanvas.width, captureCanvas.height);
 
     // Adicionar a moldura
     if (window.frameImage) {
         captureContext.drawImage(window.frameImage, 0, 0, captureCanvas.width, captureCanvas.height);
     }
-
-    captureContext.restore(); // Restaura o estado original (não invertido)
 
     // Adicionar legenda
     captureContext.font = '30px Arial';

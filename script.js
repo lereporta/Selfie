@@ -67,27 +67,23 @@ const captureCanvas = document.getElementById('canvas');
 const captureContext = captureCanvas.getContext('2d');
 
 document.getElementById('snap').addEventListener('click', () => {
-    captureContext.drawImage(video, 0, 0, captureCanvas.width, captureCanvas.height);
+    // Inverte o canvas para a captura correta
+    captureContext.save(); // Salva o estado atual do contexto
+    captureContext.scale(-1, 1); // Aplica a inversão
+    captureContext.drawImage(video, -captureCanvas.width, 0, captureCanvas.width, captureCanvas.height);
+
     // Adicionar a moldura
-    if (!window.frameImage) {
-        window.frameImage = new Image();
-        window.frameImage.src = 'frame.svg'; // Atualizado para SVG
-        window.frameImage.onload = () => {
-            captureContext.drawImage(window.frameImage, 0, 0, captureCanvas.width, captureCanvas.height);
-            // Adicionar legenda
-            captureContext.font = '30px Arial';
-            captureContext.fillStyle = 'white';
-            captureContext.fillText('XV MaFer', 10, captureCanvas.height - 20);
-            captureCanvas.style.display = 'block';
-        };
-    } else {
-        captureContext.drawImage(window.frameImage, 0, 0, captureCanvas.width, captureCanvas.height);
-        // Adicionar legenda
-        captureContext.font = '30px Arial';
-        captureContext.fillStyle = 'white';
-        captureContext.fillText('XV MaFer', 10, captureCanvas.height - 20);
-        captureCanvas.style.display = 'block';
+    if (window.frameImage) {
+        captureContext.drawImage(window.frameImage, -captureCanvas.width, 0, captureCanvas.width, captureCanvas.height);
     }
+
+    captureContext.restore(); // Restaura o estado original (não invertido)
+
+    // Adicionar legenda
+    captureContext.font = '30px Arial';
+    captureContext.fillStyle = 'white';
+    captureContext.fillText('XV MaFer', 10, captureCanvas.height - 20);
+    captureCanvas.style.display = 'block';
 });
 
 // Salvar no Firebase Storage

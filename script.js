@@ -51,7 +51,7 @@ function adjustCanvasSize() {
     const frameContext = frameCanvas.getContext('2d');
     if (!window.frameImage) {
         window.frameImage = new Image();
-        window.frameImage.src = 'frame.svg'; // Path to your frame image
+        window.frameImage.src = 'frame/moldura.svg';
         window.frameImage.onload = () => {
             frameContext.drawImage(window.frameImage, 0, 0, frameCanvas.width, frameCanvas.height);
         };

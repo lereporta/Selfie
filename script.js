@@ -43,17 +43,15 @@ function adjustCanvasSize() {
     const frameCanvas = document.getElementById('frame-canvas');
     const captureCanvas = document.getElementById('canvas');
 
-    // Ajusta o tamanho do canvas para corresponder à proporção do vídeo
     const ratio = video.videoWidth / video.videoHeight;
-    const width = video.clientWidth; // largura do elemento de vídeo na página
-    const height = width / ratio; // calcula a altura baseada na largura e proporção
+    const width = video.clientWidth;
+    const height = width / ratio;
 
     frameCanvas.width = width;
     frameCanvas.height = height;
     captureCanvas.width = width;
     captureCanvas.height = height;
 
-    // Carregar e desenhar a moldura
     const frameContext = frameCanvas.getContext('2d');
     if (!window.frameImage) {
         window.frameImage = new Image();
@@ -75,13 +73,9 @@ const captureContext = captureCanvas.getContext('2d');
 
 document.getElementById('snap').addEventListener('click', () => {
     captureContext.drawImage(video, 0, 0, captureCanvas.width, captureCanvas.height);
-
-    // Adicionar a moldura
     if (window.frameImage) {
         captureContext.drawImage(window.frameImage, 0, 0, captureCanvas.width, captureCanvas.height);
     }
-
-    // Adicionar legenda
     captureContext.font = '30px Arial';
     captureContext.fillStyle = 'white';
     captureContext.fillText('XV MaFer', 10, captureCanvas.height - 20);
@@ -90,23 +84,38 @@ document.getElementById('snap').addEventListener('click', () => {
 
 // Salvar no Firebase Storage
 document.getElementById('save').addEventListener('click', () => {
+    if (!captureCanvas.getContext('2d')) {
+        console.error("Canvas está vazio");
+        showMessage("Canvas está vazio");
+        return;
+    }
+
     captureCanvas.toBlob(blob => {
+        if (!blob) {
+            console.error("Falha ao criar imagem para upload");
+            showMessage("Falha ao criar imagem para upload");
+            return;
+        }
+
         const storageRef = ref(storage, `selfies/${Date.now()}_selfie_com_moldura.png`);
         const uploadTask = uploadBytesResumable(storageRef, blob);
 
-        uploadTask.on('state_changed', 
+        uploadTask.on('state_changed',
             (snapshot) => {
-                // Progresso da upload
                 const progress = (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
                 console.log(`Upload is ${progress}% done`);
+                showMessage(`Upload is ${progress}% done`);
             },
             (error) => {
+                console.error(`Erro ao salvar o arquivo: ${error.message}`);
                 showMessage(`Erro ao salvar o arquivo: ${error.message}`);
             },
             () => {
                 getDownloadURL(uploadTask.snapshot.ref).then((downloadURL) => {
+                    console.log(`Arquivo salvo com sucesso! URL: ${downloadURL}`);
                     showMessage(`Arquivo salvo com sucesso! URL: <a href="${downloadURL}" target="_blank">${downloadURL}</a>`);
                 }).catch(err => {
+                    console.error(`Erro ao obter o URL de download: ${err.message}`);
                     showMessage(`Erro ao obter o URL de download: ${err.message}`);
                 });
             }

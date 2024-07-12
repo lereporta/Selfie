@@ -111,6 +111,21 @@
             margin-right: 5px;
         }
 
+        #progress {
+            width: 100%;
+            background-color: #ddd;
+            margin-top: 10px;
+        }
+
+        #progress-bar {
+            width: 0%;
+            height: 30px;
+            background-color: #4CAF50;
+            text-align: center;
+            line-height: 30px;
+            color: white;
+        }
+
         .gallery-image {
             display: none;
         }
@@ -129,6 +144,9 @@
         <button id="back" style="display: none;"><i class="fas fa-arrow-left"></i></button>
     </div>
     <div id="message"></div>
+    <div id="progress">
+        <div id="progress-bar">0%</div>
+    </div>
     <div id="gallery" style="display:none;"></div>
 
     <script type="module" src="script.js"></script>

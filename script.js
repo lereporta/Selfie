@@ -104,7 +104,7 @@ document.getElementById('save').addEventListener('click', () => {
             },
             () => {
                 getDownloadURL(uploadTask.snapshot.ref).then((downloadURL) => {
-                    showMessage(`Arquivo salvo com sucesso! <button onclick="window.open('${downloadURL}', '_blank')">Visualize</button>`);
+                    showMessage(`Foto salva! <button onclick="window.open('${downloadURL}', '_blank')"><i class="fas fa-eye"></i> Visualize</button>`);
                 }).catch(err => {
                     showMessage(`Erro ao obter o URL de download: ${err.message}`);
                 });

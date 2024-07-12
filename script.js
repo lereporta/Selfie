@@ -40,7 +40,7 @@ navigator.mediaDevices.getUserMedia({ video: { width: { ideal: 1280 }, height: {
 // Ajustar o tamanho do canvas para corresponder à resolução desejada
 function adjustCanvasSize() {
     const frameCanvas = document.getElementById('frame-canvas');
-    const captureCanvas = document.getElementById('canvas');
+    const captureCanvas = document.getElementById('capture-canvas');
     
     // Definindo uma proporção quadrada baseada no menor lado
     const size = Math.min(video.videoWidth, video.videoHeight);
@@ -58,7 +58,7 @@ function adjustCanvasSize() {
 }
 
 // Tirar a foto e aplicar a moldura sem esticar a imagem
-const captureCanvas = document.getElementById('canvas');
+const captureCanvas = document.getElementById('capture-canvas');
 const captureContext = captureCanvas.getContext('2d');
 
 document.getElementById('snap').addEventListener('click', () => {
@@ -91,7 +91,16 @@ document.getElementById('snap').addEventListener('click', () => {
     frameImage.onload = () => {
         captureContext.drawImage(frameImage, 0, 0, captureCanvas.width, captureCanvas.height);
         captureCanvas.style.display = 'block';
+        document.getElementById('video').style.display = 'none';
+        document.getElementById('back').style.display = 'block';
     };
+});
+
+// Voltar à câmera
+document.getElementById('back').addEventListener('click', () => {
+    captureCanvas.style.display = 'none';
+    document.getElementById('video').style.display = 'block';
+    document.getElementById('back').style.display = 'none';
 });
 
 // Salvar no Firebase Storage

@@ -20,9 +20,11 @@
 
         #container {
             position: relative;
-            width: 100%;
-            max-width: 1080px;
-            height: 1080px;
+            width: 90%; /* Adjusted to keep the aspect ratio more square */
+            max-width: 600px; /* Limits the width to make the frame more square */
+            height: 600px; /* Same height and width to make it square */
+            margin-top: 20px; /* Added space above the container */
+            overflow: hidden; /* Ensures nothing extends beyond the container */
         }
 
         video, canvas {
@@ -39,17 +41,17 @@
         #buttons {
             display: flex;
             justify-content: space-around;
-            width: 100%;
-            max-width: 1080px;
-            margin-top: 20px;
+            width: 90%; /* Matching the width of the container */
+            max-width: 600px; /* Ensures buttons align with the container above */
+            margin-top: 10px; /* Space between the container and buttons */
         }
 
         button {
-            padding: 20px;
+            padding: 15px;
             font-size: 1rem;
-            border: 2px solid white;
-            background-color: transparent;
-            color: white;
+            border: none;
+            background-color: white;
+            color: black;
             cursor: pointer;
             border-radius: 50%; /* Circular shape */
             width: 60px;
@@ -61,7 +63,6 @@
 
         button:hover {
             background-color: #f8f8f8;
-            color: black;
         }
 
         #snap::before {
@@ -76,10 +77,7 @@
         }
 
         .gallery-image {
-            margin: 10px;
-            border: 1px solid #ddd;
-            border-radius: 4px;
-            padding: 5px;
+            display: none; /* Gallery images not shown as per user request */
         }
     </style>
 </head>
@@ -90,11 +88,11 @@
     </div>
     <div id="buttons">
         <button id="snap"></button>
-        <button id="save">Salvar no Firebase</button>
+        <button id="save">Salvar</button>
     </div>
     <canvas id="canvas" style="display:none;"></canvas>
     <div id="message"></div>
-    <div id="gallery" style="display:none;"></div> <!-- Hidden as no gallery view is required -->
+    <div id="gallery" style="display:none;"></div>
 
     <script type="module" src="script.js"></script>
 </body>

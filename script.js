@@ -56,7 +56,7 @@ function adjustCanvasSize() {
     };
 }
 
-// Tirar a foto e aplicar a moldura sem esticar a imagem
+// Tirar a foto e aplicar a moldura sem esticar a imagem, girando 180 graus horizontalmente na visualização
 const captureCanvas = document.getElementById('capture-canvas');
 const captureContext = captureCanvas.getContext('2d');
 
@@ -70,6 +70,15 @@ document.getElementById('snap').addEventListener('click', () => {
     frameImage.src = 'moldura.svg';
     frameImage.onload = () => {
         captureContext.drawImage(frameImage, 0, 0, captureCanvas.width, captureCanvas.height);
+        
+        // Girar a imagem horizontalmente na visualização
+        const imageData = captureContext.getImageData(0, 0, captureCanvas.width, captureCanvas.height);
+        captureContext.clearRect(0, 0, captureCanvas.width, captureCanvas.height);
+        captureContext.save();
+        captureContext.scale(-1, 1);
+        captureContext.drawImage(captureCanvas, -captureCanvas.width, 0);
+        captureContext.restore();
+
         captureCanvas.style.display = 'block';
         document.getElementById('video').style.display = 'none';
         document.getElementById('back').style.display = 'block';

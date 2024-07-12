@@ -56,17 +56,17 @@ function adjustCanvasSize() {
     };
 }
 
-// Tirar a foto e aplicar a moldura sem esticar a imagem, girando 180 graus verticalmente
+// Tirar a foto e aplicar a moldura sem esticar a imagem, girando 180 graus horizontalmente
 const captureCanvas = document.getElementById('capture-canvas');
 const captureContext = captureCanvas.getContext('2d');
 
 document.getElementById('snap').addEventListener('click', () => {
     captureContext.clearRect(0, 0, captureCanvas.width, captureCanvas.height); // Clear canvas first
 
-    // Capturar a imagem mantendo a proporção original e girando 180 graus verticalmente
+    // Capturar a imagem mantendo a proporção original e girando 180 graus horizontalmente
     captureContext.save();
-    captureContext.scale(1, -1);
-    captureContext.drawImage(video, 0, -captureCanvas.height, captureCanvas.width, captureCanvas.height);
+    captureContext.scale(-1, 1);
+    captureContext.drawImage(video, -captureCanvas.width, 0, captureCanvas.width, captureCanvas.height);
     captureContext.restore();
 
     const frameImage = new Image();

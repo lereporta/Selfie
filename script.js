@@ -56,18 +56,15 @@ function adjustCanvasSize() {
     };
 }
 
-// Tirar a foto e aplicar a moldura sem esticar a imagem, girando 180 graus horizontalmente
+// Tirar a foto e aplicar a moldura sem esticar a imagem
 const captureCanvas = document.getElementById('capture-canvas');
 const captureContext = captureCanvas.getContext('2d');
 
 document.getElementById('snap').addEventListener('click', () => {
     captureContext.clearRect(0, 0, captureCanvas.width, captureCanvas.height); // Clear canvas first
 
-    // Capturar a imagem mantendo a proporção original e girando 180 graus horizontalmente
-    captureContext.save();
-    captureContext.scale(-1, 1);
-    captureContext.drawImage(video, -captureCanvas.width, 0, captureCanvas.width, captureCanvas.height);
-    captureContext.restore();
+    // Capturar a imagem mantendo a proporção original
+    captureContext.drawImage(video, 0, 0, captureCanvas.width, captureCanvas.height);
 
     const frameImage = new Image();
     frameImage.src = 'moldura.svg';

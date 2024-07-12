@@ -107,9 +107,9 @@ document.getElementById('save').addEventListener('click', () => {
             },
             () => {
                 getDownloadURL(uploadTask.snapshot.ref).then((downloadURL) => {
-                    showMessage(`Foto salva! <button id="visualize" onclick="window.open('${downloadURL}', '_blank')"><i class="fas fa-eye"></i></button>`);
-                    // Estilizar o botão de visualização
+                    showMessage(`Foto salva!`);
                     const visualizeButton = document.getElementById('visualize');
+                    visualizeButton.style.display = 'flex';
                     visualizeButton.style.padding = '15px';
                     visualizeButton.style.fontSize = '1rem';
                     visualizeButton.style.border = 'none';
@@ -119,9 +119,9 @@ document.getElementById('save').addEventListener('click', () => {
                     visualizeButton.style.borderRadius = '50%';
                     visualizeButton.style.width = '60px';
                     visualizeButton.style.height = '60px';
-                    visualizeButton.style.display = 'flex';
                     visualizeButton.style.justifyContent = 'center';
                     visualizeButton.style.alignItems = 'center';
+                    visualizeButton.onclick = () => window.open(downloadURL, '_blank');
                 }).catch(err => {
                     showMessage(`Erro ao obter o URL de download: ${err.message}`);
                 });

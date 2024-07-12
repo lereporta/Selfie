@@ -25,7 +25,7 @@ function showMessage(message) {
 
 // Configurar a câmera
 const video = document.getElementById('video');
-navigator.mediaDevices.getUserMedia({ video: { width: { ideal: 1920 }, height: { ideal: 1080 } } })
+navigator.mediaDevices.getUserMedia({ video: { width: { ideal: 1280 }, height: { ideal: 720 } } })
     .then(stream => {
         video.srcObject = stream;
         video.onloadedmetadata = () => {
@@ -37,21 +37,22 @@ navigator.mediaDevices.getUserMedia({ video: { width: { ideal: 1920 }, height: {
         showMessage("Erro ao acessar a câmera: " + err.message);
     });
 
-// Ajustar o tamanho do canvas para corresponder à resolução desejada
+// Ajustar o tamanho do canvas para corresponder à resolução desejada e mantê-la quadrada
 function adjustCanvasSize() {
     const frameCanvas = document.getElementById('frame-canvas');
     const captureCanvas = document.getElementById('canvas');
     
-    frameCanvas.width = video.videoWidth;
-    frameCanvas.height = video.videoHeight;
-    captureCanvas.width = video.videoWidth;
-    captureCanvas.height = video.videoHeight;
+    let size = Math.min(video.videoWidth, video.videoHeight); // Define o tamanho do lado mais curto para manter quadrado
+    frameCanvas.width = size;
+    frameCanvas.height = size;
+    captureCanvas.width = size;
+    captureCanvas.height = size;
 
     const frameContext = frameCanvas.getContext('2d');
     const frameImage = new Image();
     frameImage.src = 'moldura.svg';
     frameImage.onload = () => {
-        frameContext.drawImage(frameImage, 0, 0, frameCanvas.width, frameCanvas.height);
+        frameContext.drawImage(frameImage, 0, 0, size, size);
     };
 }
 
@@ -60,7 +61,7 @@ const captureCanvas = document.getElementById('canvas');
 const captureContext = captureCanvas.getContext('2d');
 
 document.getElementById('snap').addEventListener('click', () => {
-    captureContext.drawImage(video, 0, 0, captureCanvas.width, captureCanvas.height);
+    captureContext.drawImage(video, (video.videoWidth - captureCanvas.width) / 2, (video.videoHeight - captureCanvas.height) / 2, captureCanvas.width, captureCanvas.height, 0, 0, captureCanvas.width, captureCanvas.height);
     const frameImage = new Image();
     frameImage.src = 'moldura.svg';
     frameImage.onload = () => {
@@ -95,29 +96,4 @@ document.getElementById('save').addEventListener('click', () => {
     }, 'image/png'); // Especifica 'image/png' para qualidade máxima
 });
 
-// Ver Galeria
-document.getElementById('view-gallery').addEventListener('click', () => {
-    const galleryRef = ref(storage, 'selfies/');
-    console.log('Tentando listar imagens na pasta selfies/');
-    listAll(galleryRef)
-        .then(res => {
-            const galleryDiv = document.getElementById('gallery');
-            galleryDiv.innerHTML = '';
-            res.items.forEach(itemRef => {
-                getDownloadURL(itemRef).then(url => {
-                    const img = document.createElement('img');
-                    img.src = url;
-                    img.className = 'gallery-image';
-                    img.width = 150;
-                    galleryDiv.appendChild(img);
-                }).catch(err => {
-                    console.error('Erro ao obter o URL de download:', err);
-                    showMessage(`Erro ao obter o URL de download: ${err.message}`);
-                });
-            });
-        })
-        .catch(err => {
-            console.error('Erro ao listar imagens:', err);
-            showMessage(`Erro ao listar imagens: ${err.message}`);
-        });
-});
+// Ver Galeria (removido, pois você indicou que não é necessário)

@@ -42,6 +42,7 @@ function adjustCanvasSize() {
     const frameCanvas = document.getElementById('frame-canvas');
     const captureCanvas = document.getElementById('capture-canvas');
     
+    // Definindo uma proporção quadrada baseada no menor lado
     const size = Math.min(video.videoWidth, video.videoHeight);
     frameCanvas.width = size;
     frameCanvas.height = size;
@@ -63,14 +64,8 @@ const captureContext = captureCanvas.getContext('2d');
 document.getElementById('snap').addEventListener('click', () => {
     captureContext.clearRect(0, 0, captureCanvas.width, captureCanvas.height); // Clear canvas first
 
-    const videoWidth = video.videoWidth;
-    const videoHeight = video.videoHeight;
-    const canvasSize = Math.min(videoWidth, videoHeight);
-
-    let offsetX = (videoWidth - canvasSize) / 2;
-    let offsetY = (videoHeight - canvasSize) / 2;
-
-    captureContext.drawImage(video, offsetX, offsetY, canvasSize, canvasSize, 0, 0, captureCanvas.width, captureCanvas.height);
+    // Capturar a imagem mantendo a proporção original
+    captureContext.drawImage(video, 0, 0, captureCanvas.width, captureCanvas.height);
 
     const frameImage = new Image();
     frameImage.src = 'moldura.svg';

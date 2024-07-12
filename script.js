@@ -111,3 +111,40 @@ document.getElementById('save').addEventListener('click', () => {
         );
     }, 'image/png', 1.0); // Especifica 'image/png' para qualidade máxima e 1.0 para máxima qualidade
 });
+
+// Criar GIF
+document.getElementById('gif').addEventListener('click', () => {
+    const gif = new GIF({
+        workers: 2,
+        quality: 10
+    });
+
+    const captureDuration = 5000; // 5 segundos
+    const frameRate = 10; // 10 fps
+    const interval = 1000 / frameRate;
+
+    let frameCount = 0;
+    const captureFrames = setInterval(() => {
+        if (frameCount >= (captureDuration / interval)) {
+            clearInterval(captureFrames);
+            gif.render();
+            return;
+        }
+        captureContext.clearRect(0, 0, captureCanvas.width, captureCanvas.height);
+        captureContext.save();
+        captureContext.scale(-1, 1);
+        captureContext.drawImage(video, -captureCanvas.width, 0, captureCanvas.width, captureCanvas.height);
+        captureContext.restore();
+        captureContext.drawImage(frameImage, 0, 0, captureCanvas.width, captureCanvas.height);
+        gif.addFrame(captureContext, {copy: true});
+        frameCount++;
+    }, interval);
+
+    gif.on('finished', (blob) => {
+        const url = URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = 'selfie.gif';
+        a.click();
+    });
+});

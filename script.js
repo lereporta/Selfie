@@ -85,6 +85,7 @@ document.getElementById('back').addEventListener('click', () => {
     document.getElementById('video').style.display = 'block';
     document.getElementById('back').style.display = 'none';
     document.getElementById('progress').style.display = 'none';
+    document.getElementById('visualize').style.display = 'none';
 });
 
 // Salvar no Firebase Storage

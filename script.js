@@ -25,7 +25,7 @@ function showMessage(message) {
 
 // Configurar a câmera
 const video = document.getElementById('video');
-navigator.mediaDevices.getUserMedia({ video: true })
+navigator.mediaDevices.getUserMedia({ video: { width: { ideal: 1920 }, height: { ideal: 1080 } } })
     .then(stream => {
         video.srcObject = stream;
         video.onloadedmetadata = () => {
@@ -37,20 +37,19 @@ navigator.mediaDevices.getUserMedia({ video: true })
         showMessage("Erro ao acessar a câmera: " + err.message);
     });
 
-// Ajustar o tamanho do canvas para corresponder ao vídeo
+// Ajustar o tamanho do canvas para corresponder à resolução desejada
 function adjustCanvasSize() {
-    const video = document.getElementById('video');
     const frameCanvas = document.getElementById('frame-canvas');
     const captureCanvas = document.getElementById('canvas');
+    
     frameCanvas.width = video.videoWidth;
     frameCanvas.height = video.videoHeight;
     captureCanvas.width = video.videoWidth;
     captureCanvas.height = video.videoHeight;
 
-    // Carregar a moldura SVG
     const frameContext = frameCanvas.getContext('2d');
     const frameImage = new Image();
-    frameImage.src = 'moldura.svg';  // Usando 'moldura.svg'
+    frameImage.src = 'moldura.svg';
     frameImage.onload = () => {
         frameContext.drawImage(frameImage, 0, 0, frameCanvas.width, frameCanvas.height);
     };
@@ -63,7 +62,7 @@ const captureContext = captureCanvas.getContext('2d');
 document.getElementById('snap').addEventListener('click', () => {
     captureContext.drawImage(video, 0, 0, captureCanvas.width, captureCanvas.height);
     const frameImage = new Image();
-    frameImage.src = 'moldura.svg';  // Usando 'moldura.svg'
+    frameImage.src = 'moldura.svg';
     frameImage.onload = () => {
         captureContext.drawImage(frameImage, 0, 0, captureCanvas.width, captureCanvas.height);
         captureCanvas.style.display = 'block';
@@ -93,7 +92,7 @@ document.getElementById('save').addEventListener('click', () => {
                 });
             }
         );
-    }, 'image/png');
+    }, 'image/png'); // Especifica 'image/png' para qualidade máxima
 });
 
 // Ver Galeria
@@ -102,7 +101,6 @@ document.getElementById('view-gallery').addEventListener('click', () => {
     console.log('Tentando listar imagens na pasta selfies/');
     listAll(galleryRef)
         .then(res => {
-            console.log('Imagens listadas:', res);
             const galleryDiv = document.getElementById('gallery');
             galleryDiv.innerHTML = '';
             res.items.forEach(itemRef => {

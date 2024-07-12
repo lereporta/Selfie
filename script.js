@@ -25,7 +25,7 @@ function showMessage(message) {
 
 // Configurar a câmera
 const video = document.getElementById('video');
-navigator.mediaDevices.getUserMedia({ video: { width: { ideal: 1280 }, height: { ideal: 720 } } })
+navigator.mediaDevices.getUserMedia({ video: { width: { ideal: 1920 }, height: { ideal: 1080 } } })
     .then(stream => {
         video.srcObject = stream;
         video.onloadedmetadata = () => {
@@ -42,12 +42,11 @@ function adjustCanvasSize() {
     const frameCanvas = document.getElementById('frame-canvas');
     const captureCanvas = document.getElementById('capture-canvas');
     
-    // Definindo uma proporção quadrada baseada no menor lado
     const size = Math.min(video.videoWidth, video.videoHeight);
     frameCanvas.width = size;
     frameCanvas.height = size;
-    captureCanvas.width = size;
-    captureCanvas.height = size;
+    captureCanvas.width = video.videoWidth;
+    captureCanvas.height = video.videoHeight;
 
     const frameContext = frameCanvas.getContext('2d');
     const frameImage = new Image();
@@ -64,27 +63,14 @@ const captureContext = captureCanvas.getContext('2d');
 document.getElementById('snap').addEventListener('click', () => {
     captureContext.clearRect(0, 0, captureCanvas.width, captureCanvas.height); // Clear canvas first
 
-    // Definindo uma proporção quadrada baseada no menor lado
-    const size = Math.min(video.videoWidth, video.videoHeight);
-    const aspectRatio = video.videoWidth / video.videoHeight;
+    const videoWidth = video.videoWidth;
+    const videoHeight = video.videoHeight;
+    const canvasSize = Math.min(videoWidth, videoHeight);
 
-    let drawWidth, drawHeight, offsetX, offsetY;
+    let offsetX = (videoWidth - canvasSize) / 2;
+    let offsetY = (videoHeight - canvasSize) / 2;
 
-    if (aspectRatio > 1) {
-        // Wide image
-        drawHeight = size;
-        drawWidth = size * aspectRatio;
-        offsetX = -(drawWidth - size) / 2;
-        offsetY = 0;
-    } else {
-        // Tall image
-        drawWidth = size;
-        drawHeight = size / aspectRatio;
-        offsetX = 0;
-        offsetY = -(drawHeight - size) / 2;
-    }
-
-    captureContext.drawImage(video, offsetX, offsetY, drawWidth, drawHeight);
+    captureContext.drawImage(video, offsetX, offsetY, canvasSize, canvasSize, 0, 0, captureCanvas.width, captureCanvas.height);
 
     const frameImage = new Image();
     frameImage.src = 'moldura.svg';
@@ -126,5 +112,5 @@ document.getElementById('save').addEventListener('click', () => {
                 });
             }
         );
-    }, 'image/png'); // Especifica 'image/png' para qualidade máxima
+    }, 'image/png', 1.0); // Especifica 'image/png' para qualidade máxima e 1.0 para máxima qualidade
 });

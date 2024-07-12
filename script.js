@@ -1,33 +1,77 @@
 // Import the functions you need from the SDKs you need
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
-import { getStorage, ref, uploadBytesResumable, getDownloadURL } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-storage.js";
+import { getStorage, ref, uploadBytesResumable, getDownloadURL, listAll } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-storage.js";
 
 // Your web app's Firebase configuration
 const firebaseConfig = {
-    apiKey: "your_api_key",
-    authDomain: "your_project_id.firebaseapp.com",
-    projectId: "your_project_id",
-    storageBucket: "your_project_id.appspot.com",
-    messagingSenderId: "your_sender_id",
-    appId: "1:your_sender_id:web:your_app_id"
+    apiKey: "AIzaSyDV447G0fPHuVoITWjXMJ-_uoZJ8LhA994",
+    authDomain: "testedoteste-d5361.firebaseapp.com",
+    projectId: "testedoteste-d5361",
+    storageBucket: "testedoteste-d5361.appspot.com",
+    messagingSenderId: "199930490793",
+    appId: "1:199930490793:web:c79d02d9ddd2635e2e9eb8"
 };
 
 // Initialize Firebase
 const app = initializeApp(firebaseConfig);
 const storage = getStorage(app);
 
+// Função para exibir mensagens
+function showMessage(message) {
+    const messageDiv = document.getElementById('message');
+    messageDiv.style.display = 'block';
+    messageDiv.innerHTML = message;
+}
+
+// Configurar a câmera
+const video = document.getElementById('video');
+navigator.mediaDevices.getUserMedia({ video: { width: { ideal: 1920 }, height: { ideal: 1080 } } })
+    .then(stream => {
+        video.srcObject = stream;
+        video.onloadedmetadata = () => {
+            adjustCanvasSize();
+        };
+    })
+    .catch(err => {
+        console.error("Erro ao acessar a câmera: " + err);
+        showMessage("Erro ao acessar a câmera: " + err.message);
+    });
+
+// Ajustar o tamanho do canvas para corresponder à resolução desejada
+function adjustCanvasSize() {
+    const frameCanvas = document.getElementById('frame-canvas');
+    const captureCanvas = document.getElementById('canvas');
+    
+    frameCanvas.width = video.videoWidth;
+    frameCanvas.height = video.videoHeight;
+    captureCanvas.width = video.videoWidth;
+    captureCanvas.height = video.videoHeight;
+
+    const frameContext = frameCanvas.getContext('2d');
+    const frameImage = new Image();
+    frameImage.src = 'moldura.svg';
+    frameImage.onload = () => {
+        frameContext.drawImage(frameImage, 0, 0, frameCanvas.width, frameCanvas.height);
+    };
+}
+
+// Tirar a foto e aplicar a moldura
+const captureCanvas = document.getElementById('canvas');
+const captureContext = captureCanvas.getContext('2d');
+
 document.getElementById('snap').addEventListener('click', () => {
-    const video = document.getElementById('video');
-    const previewCanvas = document.getElementById('preview');
-    previewCanvas.style.display = 'block'; // Show the canvas
-    const context = previewCanvas.getContext('2d');
-    context.drawImage(video, 0, 0, previewCanvas.width, previewCanvas.height);
-    video.style.display = 'none'; // Hide the video element
+    captureContext.drawImage(video, 0, 0, captureCanvas.width, captureCanvas.height);
+    const frameImage = new Image();
+    frameImage.src = 'moldura.svg';
+    frameImage.onload = () => {
+        captureContext.drawImage(frameImage, 0, 0, captureCanvas.width, captureCanvas.height);
+        captureCanvas.style.display = 'block';
+    };
 });
 
+// Salvar no Firebase Storage
 document.getElementById('save').addEventListener('click', () => {
-    const previewCanvas = document.getElementById('preview');
-    previewCanvas.toBlob(blob => {
+    captureCanvas.toBlob(blob => {
         const storageRef = ref(storage, `selfies/${Date.now()}_selfie_com_moldura.png`);
         const uploadTask = uploadBytesResumable(storageRef, blob);
 
@@ -35,15 +79,45 @@ document.getElementById('save').addEventListener('click', () => {
             (snapshot) => {
                 const progress = (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
                 console.log(`Upload is ${progress}% done`);
+                showMessage(`Upload is ${progress}% done`);
             },
             (error) => {
-                console.error(`Erro ao salvar o arquivo: ${error.message}`);
+                showMessage(`Erro ao salvar o arquivo: ${error.message}`);
             },
             () => {
                 getDownloadURL(uploadTask.snapshot.ref).then((downloadURL) => {
-                    console.log(`Arquivo salvo com sucesso! URL: ${downloadURL}`);
+                    showMessage(`Arquivo salvo com sucesso! URL: <a href="${downloadURL}" target="_blank">${downloadURL}</a>`);
+                }).catch(err => {
+                    showMessage(`Erro ao obter o URL de download: ${err.message}`);
                 });
             }
         );
-    }, 'image/png');
+    }, 'image/png'); // Especifica 'image/png' para qualidade máxima
+});
+
+// Ver Galeria
+document.getElementById('view-gallery').addEventListener('click', () => {
+    const galleryRef = ref(storage, 'selfies/');
+    console.log('Tentando listar imagens na pasta selfies/');
+    listAll(galleryRef)
+        .then(res => {
+            const galleryDiv = document.getElementById('gallery');
+            galleryDiv.innerHTML = '';
+            res.items.forEach(itemRef => {
+                getDownloadURL(itemRef).then(url => {
+                    const img = document.createElement('img');
+                    img.src = url;
+                    img.className = 'gallery-image';
+                    img.width = 150;
+                    galleryDiv.appendChild(img);
+                }).catch(err => {
+                    console.error('Erro ao obter o URL de download:', err);
+                    showMessage(`Erro ao obter o URL de download: ${err.message}`);
+                });
+            });
+        })
+        .catch(err => {
+            console.error('Erro ao listar imagens:', err);
+            showMessage(`Erro ao listar imagens: ${err.message}`);
+        });
 });

@@ -62,13 +62,30 @@ const captureCanvas = document.getElementById('canvas');
 const captureContext = captureCanvas.getContext('2d');
 
 document.getElementById('snap').addEventListener('click', () => {
-    const size = Math.min(video.videoWidth, video.videoHeight);
-    const scale = Math.min(captureCanvas.width / video.videoWidth, captureCanvas.height / video.videoHeight);
-    const x = (captureCanvas.width / 2) - (video.videoWidth / 2) * scale;
-    const y = (captureCanvas.height / 2) - (video.videoHeight / 2) * scale;
-    
     captureContext.clearRect(0, 0, captureCanvas.width, captureCanvas.height); // Clear canvas first
-    captureContext.drawImage(video, x, y, video.videoWidth * scale, video.videoHeight * scale);
+
+    // Definindo uma proporção quadrada baseada no menor lado
+    const size = Math.min(video.videoWidth, video.videoHeight);
+    const aspectRatio = video.videoWidth / video.videoHeight;
+
+    let drawWidth, drawHeight, offsetX, offsetY;
+
+    if (aspectRatio > 1) {
+        // Wide image
+        drawHeight = size;
+        drawWidth = size * aspectRatio;
+        offsetX = -(drawWidth - size) / 2;
+        offsetY = 0;
+    } else {
+        // Tall image
+        drawWidth = size;
+        drawHeight = size / aspectRatio;
+        offsetX = 0;
+        offsetY = -(drawHeight - size) / 2;
+    }
+
+    captureContext.drawImage(video, offsetX, offsetY, drawWidth, drawHeight);
+
     const frameImage = new Image();
     frameImage.src = 'moldura.svg';
     frameImage.onload = () => {

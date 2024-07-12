@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Selfie com Moldura</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -26,7 +27,7 @@
             height: 100%;
             background: url('background.png') no-repeat center center;
             background-size: cover;
-            opacity: 0.8; /* Opacidade de 50% */
+            opacity: 0.5; /* Opacidade de 50% */
             z-index: -1; /* Coloca o background atrás de outros elementos */
         }
 
@@ -77,10 +78,8 @@
             background-color: #f8f8f8;
         }
 
-        #snap::before {
-            content: "\f030";
-            font-family: "Font Awesome 5 Free";
-            font-weight: 900;
+        #snap .fa-camera {
+            font-size: 24px;
         }
 
         #message {
@@ -101,7 +100,7 @@
         <canvas id="capture-canvas" style="display: none;"></canvas>
     </div>
     <div id="buttons">
-        <button id="snap"></button>
+        <button id="snap"><i class="fas fa-camera"></i></button>
         <button id="save">Salvar</button>
         <button id="back" style="display: none;">Voltar</button>
     </div>

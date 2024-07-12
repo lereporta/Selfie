@@ -94,16 +94,17 @@ document.getElementById('save').addEventListener('click', () => {
 
         uploadTask.on('state_changed', 
             (snapshot) => {
+                // Progresso da upload
                 const progress = (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
-                console.log(`Upload is ${progress}% done`);
-                showMessage(`Upload is ${progress}% done`);
+                // console.log(`Upload is ${progress}% done`);
+                // showMessage(`Upload is ${progress}% done`);
             },
             (error) => {
                 showMessage(`Erro ao salvar o arquivo: ${error.message}`);
             },
             () => {
                 getDownloadURL(uploadTask.snapshot.ref).then((downloadURL) => {
-                    showMessage(`Arquivo salvo com sucesso! URL: <a href="${downloadURL}" target="_blank">${downloadURL}</a>`);
+                    showMessage(`Arquivo salvo com sucesso! <button onclick="window.open('${downloadURL}', '_blank')">Visualize</button>`);
                 }).catch(err => {
                     showMessage(`Erro ao obter o URL de download: ${err.message}`);
                 });

@@ -63,8 +63,11 @@ const captureContext = captureCanvas.getContext('2d');
 document.getElementById('snap').addEventListener('click', () => {
     captureContext.clearRect(0, 0, captureCanvas.width, captureCanvas.height); // Clear canvas first
 
-    // Capturar a imagem mantendo a proporção original
-    captureContext.drawImage(video, 0, 0, captureCanvas.width, captureCanvas.height);
+    // Espelhar o contexto de captura para corresponder à visualização
+    captureContext.save();
+    captureContext.scale(-1, 1);
+    captureContext.drawImage(video, -captureCanvas.width, 0, captureCanvas.width, captureCanvas.height);
+    captureContext.restore();
 
     const frameImage = new Image();
     frameImage.src = 'moldura.svg';

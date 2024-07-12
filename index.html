@@ -14,17 +14,17 @@
             align-items: center;
             justify-content: center;
             height: 100vh;
-            background: url('background') no-repeat center center fixed; /* URL da sua imagem de fundo */
+            background: url('background') no-repeat center center fixed;
             background-size: cover;
         }
 
         #container {
             position: relative;
-            width: 90%; /* Adjusted to keep the aspect ratio more square */
-            max-width: 600px; /* Limits the width to make the frame more square */
-            height: 600px; /* Same height and width to make it square */
-            margin-top: 20px; /* Added space above the container */
-            overflow: hidden; /* Ensures nothing extends beyond the container */
+            width: 90%;
+            max-width: 600px;
+            height: 600px;
+            margin-top: 20px;
+            overflow: hidden;
         }
 
         video, canvas {
@@ -32,18 +32,19 @@
             height: 100%;
         }
 
-        canvas {
+        #preview {
             position: absolute;
             top: 0;
             left: 0;
+            display: none; /* Initially hidden */
         }
 
         #buttons {
             display: flex;
             justify-content: space-around;
-            width: 90%; /* Matching the width of the container */
-            max-width: 600px; /* Ensures buttons align with the container above */
-            margin-top: 10px; /* Space between the container and buttons */
+            width: 90%;
+            max-width: 600px;
+            margin-top: 10px;
         }
 
         button {
@@ -53,7 +54,7 @@
             background-color: white;
             color: black;
             cursor: pointer;
-            border-radius: 50%; /* Circular shape */
+            border-radius: 50%;
             width: 60px;
             height: 60px;
             display: flex;
@@ -65,19 +66,9 @@
             background-color: #f8f8f8;
         }
 
-        #snap::before {
-            content: "\f030"; /* Unicode for camera icon */
-            font-family: "Font Awesome 5 Free"; /* Ensure you load Font Awesome */
-            font-weight: 900;
-        }
-
         #message {
             color: red;
             display: none;
-        }
-
-        .gallery-image {
-            display: none; /* Gallery images not shown as per user request */
         }
     </style>
 </head>
@@ -85,14 +76,13 @@
     <div id="container">
         <video id="video" autoplay playsinline></video>
         <canvas id="frame-canvas"></canvas>
+        <canvas id="preview"></canvas> <!-- Added for displaying the captured image -->
     </div>
     <div id="buttons">
-        <button id="snap"></button>
+        <button id="snap">Tirar Foto</button>
         <button id="save">Salvar</button>
     </div>
-    <canvas id="canvas" style="display:none;"></canvas>
     <div id="message"></div>
-    <div id="gallery" style="display:none;"></div>
 
     <script type="module" src="script.js"></script>
 </body>

@@ -84,27 +84,30 @@ document.getElementById('back').addEventListener('click', () => {
     captureCanvas.style.display = 'none';
     document.getElementById('video').style.display = 'block';
     document.getElementById('back').style.display = 'none';
+    document.getElementById('progress').style.display = 'none';
 });
 
 // Salvar no Firebase Storage
 document.getElementById('save').addEventListener('click', () => {
+    document.getElementById('progress').style.display = 'block';
     captureCanvas.toBlob(blob => {
         const storageRef = ref(storage, `selfies/${Date.now()}_selfie_com_moldura.png`);
         const uploadTask = uploadBytesResumable(storageRef, blob);
 
         uploadTask.on('state_changed', 
             (snapshot) => {
-                // Progresso da upload
+                // Progresso do upload
                 const progress = (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
-                // console.log(`Upload is ${progress}% done`);
-                // showMessage(`Upload is ${progress}% done`);
+                const progressBar = document.getElementById('progress-bar');
+                progressBar.style.width = progress + '%';
+                progressBar.innerHTML = progress.toFixed(0) + '%';
             },
             (error) => {
                 showMessage(`Erro ao salvar o arquivo: ${error.message}`);
             },
             () => {
                 getDownloadURL(uploadTask.snapshot.ref).then((downloadURL) => {
-                    showMessage(`Foto salva! <button onclick="window.open('${downloadURL}', '_blank')"><i class="fas fa-eye"></i> Visualize</button>`);
+                    showMessage(`Foto salva! <button onclick="window.open('${downloadURL}', '_blank')"><i class="fas fa-eye"></i></button>`);
                 }).catch(err => {
                     showMessage(`Erro ao obter o URL de download: ${err.message}`);
                 });

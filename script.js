@@ -42,7 +42,6 @@ function adjustCanvasSize() {
     const frameCanvas = document.getElementById('frame-canvas');
     const captureCanvas = document.getElementById('capture-canvas');
     
-    // Definindo uma proporção quadrada baseada no menor lado
     const size = Math.min(video.videoWidth, video.videoHeight);
     frameCanvas.width = size;
     frameCanvas.height = size;
@@ -57,15 +56,18 @@ function adjustCanvasSize() {
     };
 }
 
-// Tirar a foto e aplicar a moldura sem esticar a imagem
+// Tirar a foto e aplicar a moldura sem esticar a imagem, girando 180 graus verticalmente
 const captureCanvas = document.getElementById('capture-canvas');
 const captureContext = captureCanvas.getContext('2d');
 
 document.getElementById('snap').addEventListener('click', () => {
     captureContext.clearRect(0, 0, captureCanvas.width, captureCanvas.height); // Clear canvas first
 
-    // Capturar a imagem mantendo a proporção original
-    captureContext.drawImage(video, 0, 0, captureCanvas.width, captureCanvas.height);
+    // Capturar a imagem mantendo a proporção original e girando 180 graus verticalmente
+    captureContext.save();
+    captureContext.scale(1, -1);
+    captureContext.drawImage(video, 0, -captureCanvas.height, captureCanvas.width, captureCanvas.height);
+    captureContext.restore();
 
     const frameImage = new Image();
     frameImage.src = 'moldura.svg';

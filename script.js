@@ -1,8 +1,8 @@
-// Import the functions you need from the SDKs you need
+// Importe as funções necessárias dos SDKs
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
 import { getStorage, ref, uploadBytesResumable, getDownloadURL, listAll } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-storage.js";
 
-// Your web app's Firebase configuration
+//  Firebase configuration
 const firebaseConfig = {
     apiKey: "AIzaSyDV447G0fPHuVoITWjXMJ-_uoZJ8LhA994",
     authDomain: "testedoteste-d5361.firebaseapp.com",
@@ -12,11 +12,11 @@ const firebaseConfig = {
     appId: "1:199930490793:web:c79d02d9ddd2635e2e9eb8"
 };
 
-// Initialize Firebase
+// Iniciaa Firebase
 const app = initializeApp(firebaseConfig);
 const storage = getStorage(app);
 
-// Função para exibir mensagens
+// exibir mensagens
 function showMessage(message) {
     const messageDiv = document.getElementById('message');
     messageDiv.style.display = 'block';
@@ -37,7 +37,7 @@ navigator.mediaDevices.getUserMedia({ video: { width: { ideal: 1920 }, height: {
         showMessage("Erro ao acessar a câmera: " + err.message);
     });
 
-// Ajustar o tamanho do canvas para corresponder à resolução desejada
+// Ajustar o tamanho do canvas 
 function adjustCanvasSize() {
     const frameCanvas = document.getElementById('frame-canvas');
     const captureCanvas = document.getElementById('capture-canvas');
@@ -56,7 +56,7 @@ function adjustCanvasSize() {
     };
 }
 
-// Tirar a foto e aplicar a moldura sem esticar a imagem
+// Tirar a foto e aplicar a moldura
 const captureCanvas = document.getElementById('capture-canvas');
 const captureContext = captureCanvas.getContext('2d');
 
@@ -128,5 +128,5 @@ document.getElementById('save').addEventListener('click', () => {
                 });
             }
         );
-    }, 'image/png', 1.0); // Especifica 'image/png' para qualidade máxima e 1.0 para máxima qualidade
+    }, 'image/png', 1.0); //'image/png'  1.0 para máxima qualidade
 });
